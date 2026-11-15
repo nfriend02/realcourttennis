@@ -43,7 +43,11 @@ function authHomeChip(app: App, withTip: boolean): HTMLElement {
   });
   home.append(icon('home'));
   wrap.append(home);
-  if (withTip) wrap.append(tx('div.auth-home-tip', 'sys.homeTip'));
+  if (withTip) {
+    const tip = tx('div.auth-home-tip', 'sys.homeTip');
+    wrap.append(tip);
+    window.setTimeout(() => tip.remove(), 3000);
+  }
   return wrap;
 }
 

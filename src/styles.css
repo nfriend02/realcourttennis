@@ -42,8 +42,10 @@ input { font: inherit; user-select: text; -webkit-user-select: text; }
   position: absolute; top: 0; left: 0; right: 0; z-index: 30;
   display: flex; justify-content: space-between; align-items: flex-start;
   gap: var(--sys-gap);
-  padding: calc(8px + var(--safe-t)) calc(10px + var(--safe-r)) 8px calc(10px + var(--safe-l));
+  /* Extra top pad so the above-home tip stays inside the bar */
+  padding: calc(16px + var(--safe-t)) calc(10px + var(--safe-r)) 8px calc(10px + var(--safe-l));
   pointer-events: none;
+  overflow: visible;
 }
 .sys-left, .sys-right {
   display: flex; gap: var(--sys-gap); align-items: center; position: relative; flex-wrap: nowrap; min-width: 0;
@@ -62,17 +64,20 @@ input { font: inherit; user-select: text; -webkit-user-select: text; }
 .sys-btn:active { transform: scale(0.94); }
 .sys-btn.sound.on { color: var(--accent); border-color: rgba(227, 255, 59, 0.5); }
 .sys-home-wrap { position: relative; display: inline-flex; align-items: center; }
+/* Compact horizontal tip above the home button (all layouts / screens). */
 .home-tip {
-  position: absolute; left: calc(100% + 8px); top: 50%; transform: translateY(-50%);
+  position: absolute; left: 50%; bottom: calc(100% + 5px); top: auto;
+  transform: translateX(-50%);
   white-space: nowrap; background: rgba(255, 255, 255, 0.94); color: #13213a;
-  padding: 5px 10px; border-radius: 10px; font-size: 12px; font-weight: 700;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25); animation: tipIn 0.28s ease-out; pointer-events: none; z-index: 2;
+  padding: 2px 7px; border-radius: 8px; font-size: 10px; font-weight: 700; line-height: 1.2;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28); animation: tipIn 0.28s ease-out; pointer-events: none; z-index: 4;
 }
 .home-tip::before {
-  content: ''; position: absolute; left: -6px; top: 50%; transform: translateY(-50%);
-  border: 6px solid transparent; border-right-color: rgba(255, 255, 255, 0.94); border-left: 0;
+  content: ''; position: absolute; left: 50%; top: 100%; bottom: auto;
+  transform: translateX(-50%);
+  border: 5px solid transparent; border-top-color: rgba(255, 255, 255, 0.94); border-bottom: 0;
 }
-@keyframes tipIn { from { opacity: 0; transform: translate(-4px, -50%); } }
+@keyframes tipIn { from { opacity: 0; transform: translate(-50%, 4px); } }
 
 /* Optional stacked sysbar (unused by default profiles; kept for narrow emergency layouts). */
 html[data-sysbar-rows='2'] .sysbar {
@@ -91,19 +96,20 @@ html[data-sysbar-rows='2'] .sys-btn.sys-text {
   font-size: 12px; padding: 0 12px; min-height: var(--sys-btn);
 }
 html[data-sysbar-rows='2'] .home-tip {
-  left: 0; top: calc(100% + 6px); transform: none; white-space: normal; max-width: min(56vw, 220px);
+  left: 50%; bottom: calc(100% + 5px); top: auto; transform: translateX(-50%);
+  white-space: nowrap; max-width: none; font-size: 10px; padding: 2px 7px;
 }
 html[data-sysbar-rows='2'] .home-tip::before {
-  left: 14px; top: -6px; transform: none;
-  border: 6px solid transparent; border-bottom-color: rgba(255, 255, 255, 0.94); border-top: 0; border-right-color: transparent;
+  left: 50%; top: 100%; transform: translateX(-50%);
+  border: 5px solid transparent; border-top-color: rgba(255, 255, 255, 0.94); border-bottom: 0; border-right-color: transparent;
 }
 
-/* Mobile portrait: keep all sys buttons on one row */
+/* Mobile portrait: keep all sys buttons on one row (extra top pad for above-home tip) */
 html[data-layout='mobile-portrait'] .sysbar {
   flex-wrap: nowrap;
   align-items: center;
   gap: 4px;
-  padding: calc(6px + var(--safe-t)) calc(6px + var(--safe-r)) 6px calc(6px + var(--safe-l));
+  padding: calc(18px + var(--safe-t)) calc(6px + var(--safe-r)) 6px calc(6px + var(--safe-l));
 }
 html[data-layout='mobile-portrait'] .sys-left,
 html[data-layout='mobile-portrait'] .sys-right {
@@ -120,12 +126,12 @@ html[data-layout='mobile-portrait'] .sys-btn.sys-text {
 }
 html[data-layout='mobile-portrait'] .sys-btn.sys-text .ico { width: 16px; height: 16px; }
 html[data-layout='mobile-portrait'] .home-tip {
-  left: 0; top: calc(100% + 6px); transform: none; white-space: normal; max-width: min(56vw, 220px);
-  font-size: 11px; padding: 4px 8px;
+  left: 50%; bottom: calc(100% + 4px); top: auto; transform: translateX(-50%);
+  white-space: nowrap; max-width: none; font-size: 9px; padding: 2px 6px;
 }
 html[data-layout='mobile-portrait'] .home-tip::before {
-  left: 14px; top: -6px; transform: none;
-  border: 6px solid transparent; border-bottom-color: rgba(255, 255, 255, 0.94); border-top: 0; border-right-color: transparent;
+  left: 50%; top: 100%; transform: translateX(-50%);
+  border: 4px solid transparent; border-top-color: rgba(255, 255, 255, 0.94); border-bottom: 0; border-right-color: transparent;
 }
 
 /* ------------------------------------------------------------------ screens */
@@ -225,9 +231,10 @@ button.skip {
 .choice { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
 
 /* Auth cards — welcome + home chip */
-.auth-card { position: relative; }
+.card.auth-card { position: relative; overflow: visible; }
 .auth-head {
-  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+  margin-bottom: 12px; padding-top: 16px;
 }
 .auth-head h2 { margin: 4px 0 0; font-size: 22px; }
 .auth-welcome {
@@ -242,14 +249,16 @@ button.skip {
 .auth-home-btn:active { transform: scale(0.94); }
 .auth-home-btn .ico { width: 18px; height: 18px; }
 .auth-home-tip {
-  position: absolute; right: calc(100% + 8px); top: 50%; transform: translateY(-50%);
+  position: absolute; left: 50%; bottom: calc(100% + 5px); top: auto; right: auto;
+  transform: translateX(-50%);
   white-space: nowrap; background: rgba(255, 255, 255, 0.94); color: #13213a;
-  padding: 5px 9px; border-radius: 10px; font-size: 11px; font-weight: 700;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28); pointer-events: none; animation: tipIn 0.28s ease-out;
+  padding: 2px 7px; border-radius: 8px; font-size: 10px; font-weight: 700; line-height: 1.2;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28); pointer-events: none; animation: tipIn 0.28s ease-out; z-index: 2;
 }
 .auth-home-tip::before {
-  content: ''; position: absolute; right: -6px; top: 50%; transform: translateY(-50%);
-  border: 6px solid transparent; border-left-color: rgba(255, 255, 255, 0.94); border-right: 0;
+  content: ''; position: absolute; left: 50%; top: 100%; right: auto; bottom: auto;
+  transform: translateX(-50%);
+  border: 5px solid transparent; border-top-color: rgba(255, 255, 255, 0.94); border-bottom: 0; border-left-color: transparent;
 }
 .signup-cta-wrap { display: flex; justify-content: center; margin-top: 12px; }
 .signup-cta-wrap .link, .link.signup-cta {
@@ -263,16 +272,18 @@ button.skip {
 .pw-hint { margin: 0 0 8px; font-size: 12px; color: var(--ink-dim); line-height: 1.45; }
 .pw-mask { letter-spacing: 0.12em; color: var(--ink-dim); }
 .mypage-head {
-  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 8px;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+  margin-bottom: 8px; padding-top: 16px;
 }
 .mypage-head h2 { margin: 0; }
 
 html[data-layout='mobile-portrait'] .auth-home-tip {
-  right: auto; left: 50%; top: calc(100% + 6px); transform: translateX(-50%); white-space: normal; max-width: 140px; text-align: center;
+  left: 50%; right: auto; bottom: calc(100% + 4px); top: auto; transform: translateX(-50%);
+  white-space: nowrap; max-width: none; font-size: 9px; padding: 2px 6px; text-align: center;
 }
 html[data-layout='mobile-portrait'] .auth-home-tip::before {
-  left: 50%; right: auto; top: -6px; transform: translateX(-50%);
-  border: 6px solid transparent; border-bottom-color: rgba(255, 255, 255, 0.94); border-top: 0; border-left-color: transparent;
+  left: 50%; right: auto; top: 100%; transform: translateX(-50%);
+  border: 4px solid transparent; border-top-color: rgba(255, 255, 255, 0.94); border-bottom: 0; border-left-color: transparent;
 }
 html[data-layout='mobile-portrait'] .phone-row { grid-template-columns: 76px 1fr; }
 

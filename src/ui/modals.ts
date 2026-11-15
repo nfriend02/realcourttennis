@@ -29,7 +29,9 @@ export function openMyPage(app: App): void {
     },
   });
   homeBtn.append(icon('home'));
-  homeWrap.append(homeBtn, tx('div.auth-home-tip', 'sys.homeTip'));
+  const homeTip = tx('div.auth-home-tip', 'sys.homeTip');
+  homeWrap.append(homeBtn, homeTip);
+  window.setTimeout(() => homeTip.remove(), 3000);
   head.append(homeWrap);
   body.append(head);
 

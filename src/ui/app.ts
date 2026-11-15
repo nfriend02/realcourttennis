@@ -134,7 +134,7 @@ export class App {
         this.homeTipShown = true;
         const tip = tx('div.home-tip', 'sys.homeTip');
         homeWrap.append(tip);
-        window.setTimeout(() => tip.remove(), 4500);
+        window.setTimeout(() => tip.remove(), 3000);
       }
       left.append(homeWrap);
     }
