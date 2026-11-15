@@ -1,0 +1,126 @@
+rules_version = '2';
+
+// Real Court Tennis — Firestore Security Rules (ADR-002).
+// Every progress / ranking / mileage write must reference a match result document created in the
+// same transaction (`lastResult`), so stored values can only move by amounts the validated result allows.
+// Limitation: without Cloud Functions the result itself is still client-reported; rules only bound it.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function isOwner(uid) { return signedIn() && request.auth.uid == uid; }
+    function maxOf(a, b) { return a > b ? a : b; }
+    function onlyChanged(keys) { return request.resource.data.diff(resource.data).affectedKeys().hasOnly(keys); }
+
+    function resultPath(uid, rid) { return /databases/$(database)/documents/profiles/$(uid)/results/$(rid); }
+    function isNewResult(uid, rid) { return !exists(resultPath(uid, rid)) && existsAfter(resultPath(uid, rid)); }
+    function newResult(uid, rid) { return getAfter(resultPath(uid, rid)).data; }
+
+    function profilePath(uid) { return /databases/$(database)/documents/profiles/$(uid); }
+    function rankingPath(uid) { return /databases/$(database)/documents/rankings/$(uid); }
+
+    function validUsername(n) { return n is string && n.matches('^[\\p{L}\\p{N}_]{2,12}$'); }
+
+    // ------------------------------------------------------------------ guest nickname registry
+    match /guestNames/{nameLower} {
+      allow get: if true;
+      allow create: if isOwner(request.resource.data.uid)
+        && request.resource.data.keys().hasOnly(['uid', 'expireAt'])
+        && getAfter(profilePath(request.auth.uid)).data.usernameLower == nameLower;
+      allow delete: if signedIn() && resource.data.uid == request.auth.uid;
+    }
+
+    // ------------------------------------------------------------------ public ranking
+    match /rankings/{uid} {
+      allow read: if true;
+      allow create, update: if isOwner(uid)
+        && request.resource.data.keys().hasOnly(['username', 'stageCleared', 'highScore', 'lastResult', 'updatedAt'])
+        && isNewResult(uid, request.resource.data.lastResult)
+        && newResult(uid, request.resource.data.lastResult).mode == 'stage'
+        && request.resource.data.username == get(profilePath(uid)).data.username
+        && request.resource.data.highScore == maxOf(resource == null ? 0 : resource.data.highScore,
+                                                    newResult(uid, request.resource.data.lastResult).score)
+        && request.resource.data.stageCleared == maxOf(resource == null ? 0 : resource.data.stageCleared,
+             newResult(uid, request.resource.data.lastResult).won ? newResult(uid, request.resource.data.lastResult).stageId : 0);
+      allow delete: if isOwner(uid);
+    }
+
+    // ------------------------------------------------------------------ profile
+    match /profiles/{uid} {
+      allow read: if isOwner(uid);
+
+      allow create: if isOwner(uid)
+        && request.resource.data.keys().hasOnly(['username', 'usernameLower', 'accountType', 'handedness',
+             'preferredLanguage', 'selectedCharacter', 'mileage', 'freeBest', 'role', 'expireAt', 'createdAt', 'updatedAt'])
+        && validUsername(request.resource.data.username)
+        && request.resource.data.usernameLower == request.resource.data.username.lower()
+        && request.resource.data.accountType in ['guest', 'email', 'phone', 'google', 'apple']
+        && (request.resource.data.accountType == 'guest') == (request.auth.token.firebase.sign_in_provider == 'anonymous')
+        && request.resource.data.handedness in ['right', 'left']
+        && request.resource.data.preferredLanguage in ['ko', 'en', 'ja']
+        && request.resource.data.mileage == 0
+        && request.resource.data.freeBest == 0
+        && request.resource.data.role == 'player';
+
+      // Settings edits.
+      allow update: if isOwner(uid)
+        && onlyChanged(['handedness', 'preferredLanguage', 'selectedCharacter', 'updatedAt'])
+        && request.resource.data.handedness in ['right', 'left']
+        && request.resource.data.preferredLanguage in ['ko', 'en', 'ja']
+        && request.resource.data.selectedCharacter is string && request.resource.data.selectedCharacter.size() <= 16;
+
+      // Result application: mileage / freeBest move only by the new result.
+      allow update: if isOwner(uid)
+        && onlyChanged(['mileage', 'freeBest', 'lastResult', 'expireAt', 'updatedAt'])
+        && isNewResult(uid, request.resource.data.lastResult)
+        && request.resource.data.mileage == resource.data.mileage + newResult(uid, request.resource.data.lastResult).score
+        && request.resource.data.freeBest == (newResult(uid, request.resource.data.lastResult).mode == 'free'
+             ? maxOf(resource.data.freeBest, newResult(uid, request.resource.data.lastResult).score)
+             : resource.data.freeBest);
+
+      allow delete: if isOwner(uid);
+
+      // ---------------------------------------------------------------- match results (append-only)
+      match /results/{rid} {
+        allow read, delete: if isOwner(uid);
+        allow create: if isOwner(uid)
+          && request.resource.data.keys().hasOnly(['mode', 'stageId', 'npcLevel', 'characterId', 'won', 'pointsFor',
+               'pointsAgainst', 'perfect', 'great', 'good', 'miss', 'maxRally', 'durationSec', 'score',
+               'clientVersion', 'layout', 'lang', 'createdAt'])
+          && request.resource.data.mode in ['stage', 'free']
+          && (request.resource.data.mode == 'free'
+              ? request.resource.data.stageId == null
+              : (request.resource.data.stageId is int && request.resource.data.stageId >= 1 && request.resource.data.stageId <= 10
+                 && (request.resource.data.stageId == 1
+                     || (exists(rankingPath(uid)) && get(rankingPath(uid)).data.stageCleared + 1 >= request.resource.data.stageId))))
+          && request.resource.data.npcLevel is int && request.resource.data.npcLevel >= 1 && request.resource.data.npcLevel <= 5
+          && request.resource.data.won is bool
+          && request.resource.data.pointsFor is int && request.resource.data.pointsFor >= 0 && request.resource.data.pointsFor <= 3
+          && request.resource.data.pointsAgainst is int && request.resource.data.pointsAgainst >= 0 && request.resource.data.pointsAgainst <= 3
+          && (!request.resource.data.won || request.resource.data.pointsFor == 3)
+          && request.resource.data.score is int && request.resource.data.score >= 0 && request.resource.data.score <= 40000
+          && request.resource.data.durationSec is int && request.resource.data.durationSec >= 20
+          && request.resource.data.createdAt == request.time;
+      }
+
+      // ---------------------------------------------------------------- stage progress
+      match /progress/{stageId} {
+        allow read, delete: if isOwner(uid);
+        allow create, update: if isOwner(uid)
+          && request.resource.data.keys().hasOnly(['cleared', 'bestScore', 'clearCount', 'lastResult', 'updatedAt'])
+          && isNewResult(uid, request.resource.data.lastResult)
+          && string(newResult(uid, request.resource.data.lastResult).stageId) == stageId
+          && request.resource.data.bestScore == maxOf(resource == null ? 0 : resource.data.bestScore,
+                                                      newResult(uid, request.resource.data.lastResult).score)
+          && request.resource.data.cleared == ((resource != null && resource.data.cleared) || newResult(uid, request.resource.data.lastResult).won)
+          && request.resource.data.clearCount == (resource == null ? 0 : resource.data.clearCount)
+               + (newResult(uid, request.resource.data.lastResult).won ? 1 : 0);
+      }
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

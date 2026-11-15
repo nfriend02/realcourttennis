@@ -1,0 +1,65 @@
+{
+  "camera": {
+    "landscape": { "distanceBehind": 12.0, "height": 2.1, "fovMode": "vertical", "fovDeg": 13.0, "feetViewportY": -0.01, "followDampingSec": 0.15, "maxYawDeg": 8, "ballTopMarginDeg": 2.4, "ballSideMarginDeg": 1.0, "maxFovMul": 2.2, "fovDampingSec": 0.2 },
+    "portrait": { "distanceBehind": 12.0, "height": 2.1, "fovMode": "horizontal", "fovDeg": 22.8, "feetViewportY": -0.01, "followDampingSec": 0.15, "maxYawDeg": 8, "ballTopMarginDeg": 2.4, "ballSideMarginDeg": 1.0, "maxFovMul": 2.2, "fovDampingSec": 0.2 }
+  },
+  "motion": {
+    "maxDownswingSec": 0.25,
+    "backswingSec": 0.32,
+    "prepTurnCoil": 0.35,
+    "npcWindupSec": 0.32,
+    "npcHighContactM": 1.3,
+    "npcLowContactM": 0.75,
+    "runSpeedMin": 0.4,
+    "runRateBase": 0.7,
+    "runRatePerMps": 0.08,
+    "pointReactionSec": 1.6,
+    "reactionMaxSpeed": 0.6,
+    "tint": { "day": "#FFFFFF", "sunset": "#FFE2CC", "indoor": "#F1F4FF", "night": "#D4DCFF" }
+  },
+  "fx": {
+    "cols": 8,
+    "pool": 12,
+    "items": {
+      "fx_hit_perfect": { "durationSec": 0.42, "sizeM": 1.5 },
+      "fx_hit_great": { "durationSec": 0.36, "sizeM": 1.0 },
+      "fx_bounce_dust": { "durationSec": 0.5, "sizeM": 0.9 },
+      "fx_net_shake": { "durationSec": 0.45, "sizeM": 1.8 },
+      "fx_confetti": { "durationSec": 1.8, "sizeM": 2.6 }
+    },
+    "confettiBursts": 3,
+    "confettiSpreadM": 2.2,
+    "confettiHeightM": 3.2
+  },
+  "crowd": {
+    "cols": 8,
+    "rows": 2,
+    "heightM": 1.25,
+    "seatDropM": 0.3,
+    "idleCheer": 0.06,
+    "cheerThreshold": 0.3,
+    "bounceBaseM": 0.02,
+    "bounceCheerM": 0.22,
+    "cheerDecayPerSec": 0.6,
+    "tint": { "day": "#FFFFFF", "sunset": "#FFD9C2", "indoor": "#E8ECF5", "night": "#9AA6C8" }
+  },
+  "ballVisualScaleNear": 1.0,
+  "ballVisualScaleFar": 2.5,
+  "bounceCues": {
+    "band": {
+      "low": { "hex": "#5ec8ff", "ringScale": 0.85, "dustScale": 0.75 },
+      "middle": { "hex": "#ffef5a", "ringScale": 1.0, "dustScale": 1.0 },
+      "high": { "hex": "#ff8a4a", "ringScale": 1.25, "dustScale": 1.35 }
+    },
+    "arc": { "maxDots": 10, "dotRadiusM": 0.06, "apexRadiusM": 0.12, "opacity": 0.7 },
+    "shadow": { "heightMul": 0.55, "minScale": 0.45, "maxScale": 2.4, "gaugeHeightM": 1.6, "gaugeWidthM": 0.04 },
+    "calloutSec": 0.55,
+    "trailTintSec": 1.8
+  },
+  "themes": {
+    "day": { "nameKey": "court.day", "sky": ["#5FB4F0", "#CFEAFB"], "court": "#3E8E5E", "outer": "#2F6E49", "line": "#FFFFFF", "stands": "#E9EEF3", "sun": "#FFF6E0", "sunIntensity": 2.4, "ambient": 1.1, "fog": "#CFEAFB" },
+    "sunset": { "nameKey": "court.sunset", "sky": ["#F0784A", "#FCD39B"], "court": "#C4673F", "outer": "#9C4E2F", "line": "#FFF4E6", "stands": "#5B4660", "sun": "#FFB27A", "sunIntensity": 2.0, "ambient": 0.9, "fog": "#F6B98A" },
+    "indoor": { "nameKey": "court.indoor", "sky": ["#2C3440", "#56606E"], "court": "#2F6FAE", "outer": "#B9874F", "line": "#FFFFFF", "stands": "#3A4250", "sun": "#FFFFFF", "sunIntensity": 1.6, "ambient": 1.4, "fog": "#3A4250" },
+    "night": { "nameKey": "court.night", "sky": ["#070B1E", "#1C2650"], "court": "#24578F", "outer": "#1B3F66", "line": "#F5F8FF", "stands": "#151A2E", "sun": "#DDE6FF", "sunIntensity": 2.2, "ambient": 0.7, "fog": "#0D1330" }
+  }
+}

@@ -1,0 +1,1036 @@
+{
+  "key": {
+    "color": "0x00FF00",
+    "auto": true,
+    "similarity": 0.16,
+    "blend": 0.06,
+    "despillMix": 0.6
+  },
+  "mask": [
+    {
+      "x": 0.86,
+      "y": 0.76,
+      "w": 0.14,
+      "h": 0.24
+    }
+  ],
+  "detect": {
+    "fps": 10,
+    "alphaLimit": 128,
+    "padRatio": 0.03,
+    "downscale": 4,
+    "minPixels": 2
+  },
+  "maxTexture": 4096,
+  "quality": 88,
+  "views": {
+    "back": {
+      "cellHeight": 240
+    },
+    "front": {
+      "cellHeight": 128
+    }
+  },
+  "clips": {
+    "idle": {
+      "start": 0.5,
+      "end": 2.5,
+      "fps": 12,
+      "loop": "pingpong"
+    },
+    "serve_ready": {
+      "start": 0.5,
+      "end": 3.5,
+      "fps": 12,
+      "loop": "loop"
+    },
+    "split": {
+      "start": 1.6,
+      "end": 2.4,
+      "fps": 20,
+      "loop": "once"
+    },
+    "run_left": {
+      "start": 1,
+      "end": 3,
+      "fps": 15,
+      "loop": "loop"
+    },
+    "run_right": {
+      "start": 1,
+      "end": 3,
+      "fps": 15,
+      "loop": "loop"
+    },
+    "fh_high": {
+      "start": 1.1,
+      "end": 2.9,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 1.6,
+        "contact": 2
+      }
+    },
+    "fh_mid": {
+      "start": 1.1,
+      "end": 2.9,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 1.6,
+        "contact": 2
+      }
+    },
+    "fh_low": {
+      "start": 1.1,
+      "end": 2.9,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 1.6,
+        "contact": 2
+      }
+    },
+    "bh_high": {
+      "start": 0.3,
+      "end": 1.9,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.5,
+        "contact": 0.9
+      }
+    },
+    "bh_mid": {
+      "start": 0.3,
+      "end": 1.9,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.5,
+        "contact": 0.9
+      }
+    },
+    "bh_low": {
+      "start": 0.3,
+      "end": 1.9,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.5,
+        "contact": 0.9
+      }
+    },
+    "serve": {
+      "start": 0.6,
+      "end": 3.2,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "toss": 0.8,
+        "contact": 2.2
+      }
+    },
+    "victory": {
+      "start": 0.3,
+      "end": 3.7,
+      "fps": 12,
+      "loop": "once"
+    },
+    "defeat": {
+      "start": 0.3,
+      "end": 3.7,
+      "fps": 12,
+      "loop": "once"
+    },
+    "smash": {
+      "start": 1,
+      "end": 3,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 1.6,
+        "contact": 2
+      }
+    },
+    "reach_fh": {
+      "start": 1.1,
+      "end": 2.9,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 1.6,
+        "contact": 2
+      }
+    },
+    "reach_bh": {
+      "start": 0.3,
+      "end": 1.9,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.5,
+        "contact": 0.9
+      }
+    },
+    "point_win": {
+      "start": 0.5,
+      "end": 2.5,
+      "fps": 12,
+      "loop": "once"
+    },
+    "point_lose": {
+      "start": 0.5,
+      "end": 2.5,
+      "fps": 12,
+      "loop": "once"
+    },
+    "run_forward": {
+      "start": 1,
+      "end": 3,
+      "fps": 15,
+      "loop": "loop"
+    },
+    "run_back": {
+      "start": 1,
+      "end": 3,
+      "fps": 15,
+      "loop": "loop"
+    },
+    "walk_in": {
+      "start": 0,
+      "end": 4,
+      "fps": 12,
+      "loop": "once"
+    }
+  },
+  "overrides": {
+    "char_01/back/bh_high": {
+      "markers": {
+        "backswing": 0.6,
+        "contact": 0.8
+      },
+      "start": 0.3,
+      "end": 1.65
+    },
+    "char_01/back/bh_low": {
+      "markers": {
+        "backswing": 0.65,
+        "contact": 0.9
+      },
+      "start": 0.35,
+      "end": 1.75
+    },
+    "char_01/back/bh_mid": {
+      "markers": {
+        "backswing": 0.75,
+        "contact": 1
+      },
+      "start": 0.45,
+      "end": 1.85
+    },
+    "char_01/back/defeat": {
+      "start": 0.04,
+      "end": 3.46
+    },
+    "char_01/back/fh_high": {
+      "markers": {
+        "backswing": 1.85,
+        "contact": 2.1
+      },
+      "start": 1.3,
+      "end": 2.95
+    },
+    "char_01/back/fh_low": {
+      "markers": {
+        "backswing": 1.9,
+        "contact": 2.05
+      },
+      "start": 1.35,
+      "end": 2.9
+    },
+    "char_01/back/fh_mid": {
+      "markers": {
+        "backswing": 1.85,
+        "contact": 2.05
+      },
+      "start": 1.3,
+      "end": 2.9
+    },
+    "char_01/back/idle": {
+      "start": 0.46,
+      "end": 3.04,
+      "stabilize": true
+    },
+    "char_01/back/point_lose": {
+      "start": 0.38,
+      "end": 2.38
+    },
+    "char_01/back/point_win": {
+      "start": 0.29,
+      "end": 2.29
+    },
+    "char_01/back/reach_bh": {
+      "markers": {
+        "backswing": 0.5,
+        "contact": 0.9
+      },
+      "start": 0.2,
+      "end": 1.75,
+      "exclude": true
+    },
+    "char_01/back/reach_fh": {
+      "markers": {
+        "backswing": 1.85,
+        "contact": 2.05
+      },
+      "start": 1.3,
+      "end": 2.9
+    },
+    "char_01/back/run_back": {
+      "start": 1.25,
+      "end": 3,
+      "crossfade": 0.2,
+      "stabilize": true
+    },
+    "char_01/back/run_forward": {
+      "start": 1.29,
+      "end": 2.96
+    },
+    "char_01/back/run_left": {
+      "loop": "pingpong",
+      "start": 1.08,
+      "end": 2.08,
+      "stabilize": true
+    },
+    "char_01/back/run_right": {
+      "start": 1.33,
+      "end": 2.96,
+      "crossfade": 0.2,
+      "stabilize": true
+    },
+    "char_01/back/serve": {
+      "markers": {
+        "toss": 1,
+        "contact": 2.3
+      },
+      "start": 0.8,
+      "end": 3.25
+    },
+    "char_01/back/serve_ready": {
+      "start": 0.63,
+      "end": 3.63,
+      "crossfade": 0.35,
+      "stabilize": true
+    },
+    "char_01/back/smash": {
+      "markers": {
+        "backswing": 1.9,
+        "contact": 2.2
+      },
+      "start": 1.35,
+      "end": 3
+    },
+    "char_01/back/split": {
+      "start": 1.68,
+      "end": 2.48
+    },
+    "char_01/back/victory": {
+      "start": 0.21,
+      "end": 3.63
+    },
+    "char_01/back/walk_in": {
+      "start": 0.04,
+      "end": 3.96
+    },
+    "char_01/front/bh_high": {
+      "markers": {
+        "backswing": 0.6,
+        "contact": 1
+      },
+      "start": 0.3,
+      "end": 1.85
+    },
+    "char_01/front/bh_low": {
+      "markers": {
+        "backswing": 0.6,
+        "contact": 0.95
+      },
+      "start": 0.3,
+      "end": 1.8
+    },
+    "char_01/front/bh_mid": {
+      "markers": {
+        "backswing": 0.6,
+        "contact": 0.92
+      },
+      "start": 0.3,
+      "end": 1.77
+    },
+    "char_01/front/defeat": {
+      "start": 0.17,
+      "end": 2.17
+    },
+    "char_01/front/fh_high": {
+      "markers": {
+        "backswing": 1.95,
+        "contact": 2.1
+      },
+      "start": 1.4,
+      "end": 2.95
+    },
+    "char_01/front/fh_low": {
+      "markers": {
+        "backswing": 1.85,
+        "contact": 2.1
+      },
+      "start": 1.3,
+      "end": 2.95
+    },
+    "char_01/front/fh_mid": {
+      "markers": {
+        "backswing": 1.8,
+        "contact": 2.05
+      },
+      "start": 1.25,
+      "end": 2.9
+    },
+    "char_01/front/idle": {
+      "start": 0.92,
+      "end": 3.04,
+      "stabilize": true
+    },
+    "char_01/front/point_lose": {
+      "start": 0.5,
+      "end": 2.5
+    },
+    "char_01/front/point_win": {
+      "start": 0.46,
+      "end": 2.46
+    },
+    "char_01/front/reach_bh": {
+      "markers": {
+        "backswing": 0.6,
+        "contact": 0.95
+      },
+      "start": 0.3,
+      "end": 1.8
+    },
+    "char_01/front/reach_fh": {
+      "markers": {
+        "backswing": 1.9,
+        "contact": 2.15
+      },
+      "start": 1.35,
+      "end": 3
+    },
+    "char_01/front/run_back": {
+      "start": 1.75,
+      "end": 2.96,
+      "crossfade": 0.2
+    },
+    "char_01/front/run_forward": {
+      "start": 1,
+      "end": 2.75,
+      "crossfade": 0.2,
+      "stabilize": true
+    },
+    "char_01/front/run_left": {
+      "loop": "pingpong",
+      "start": 1.29,
+      "end": 2.29,
+      "stabilize": true
+    },
+    "char_01/front/run_right": {
+      "loop": "pingpong",
+      "start": 1,
+      "end": 2,
+      "stabilize": true
+    },
+    "char_01/front/serve": {
+      "markers": {
+        "toss": 1.05,
+        "contact": 2.2
+      },
+      "start": 0.85,
+      "end": 3.15
+    },
+    "char_01/front/serve_ready": {
+      "start": 0.88,
+      "end": 3.88,
+      "crossfade": 0.35,
+      "stabilize": true
+    },
+    "char_01/front/smash": {
+      "markers": {
+        "backswing": 1.75,
+        "contact": 2.05
+      },
+      "start": 1.2,
+      "end": 2.85
+    },
+    "char_01/front/split": {
+      "start": 2.89,
+      "end": 3.69
+    },
+    "char_01/front/victory": {
+      "start": 0.29,
+      "end": 2.63
+    },
+    "char_01/front/walk_in": {
+      "start": 0.08,
+      "end": 3.96
+    },
+    "char_02/back/bh_high": {
+      "markers": {
+        "backswing": 0.8,
+        "contact": 1.05
+      },
+      "start": 0.5,
+      "end": 1.9
+    },
+    "char_02/back/bh_low": {
+      "markers": {
+        "backswing": 0.65,
+        "contact": 0.9
+      },
+      "start": 0.35,
+      "end": 1.75
+    },
+    "char_02/back/bh_mid": {
+      "markers": {
+        "backswing": 0.65,
+        "contact": 0.85
+      },
+      "start": 0.35,
+      "end": 1.7
+    },
+    "char_02/back/defeat": {
+      "start": 1.67,
+      "end": 3.71
+    },
+    "char_02/back/fh_high": {
+      "markers": {
+        "backswing": 1.85,
+        "contact": 2.12
+      },
+      "start": 1.3,
+      "end": 2.97
+    },
+    "char_02/back/fh_low": {
+      "markers": {
+        "backswing": 1.9,
+        "contact": 2.15
+      },
+      "start": 1.35,
+      "end": 3
+    },
+    "char_02/back/fh_mid": {
+      "markers": {
+        "backswing": 1.9,
+        "contact": 2.2
+      },
+      "start": 1.35,
+      "end": 3.05
+    },
+    "char_02/back/idle": {
+      "start": 1.71,
+      "end": 2.96,
+      "stabilize": true
+    },
+    "char_02/back/point_lose": {
+      "start": 0.42,
+      "end": 2.42
+    },
+    "char_02/back/point_win": {
+      "start": 0.5,
+      "end": 2.5
+    },
+    "char_02/back/reach_bh": {
+      "markers": {
+        "backswing": 0.65,
+        "contact": 1.1
+      },
+      "start": 0.35,
+      "end": 1.95
+    },
+    "char_02/back/reach_fh": {
+      "markers": {
+        "backswing": 2.1,
+        "contact": 2.3
+      },
+      "start": 1.55,
+      "end": 3.15
+    },
+    "char_02/back/run_back": {
+      "loop": "pingpong",
+      "start": 1.92,
+      "end": 2.92,
+      "stabilize": true
+    },
+    "char_02/back/run_forward": {
+      "loop": "pingpong",
+      "start": 2.08,
+      "end": 3.08
+    },
+    "char_02/back/run_left": {
+      "start": 1.71,
+      "end": 2.83,
+      "crossfade": 0.2,
+      "stabilize": true
+    },
+    "char_02/back/run_right": {
+      "start": 2.13,
+      "end": 3.79,
+      "crossfade": 0.2,
+      "stabilize": true
+    },
+    "char_02/back/serve": {
+      "markers": {
+        "toss": 0.95,
+        "contact": 2.35
+      },
+      "start": 0.75,
+      "end": 3.3
+    },
+    "char_02/back/serve_ready": {
+      "start": 0.42,
+      "end": 3.42,
+      "crossfade": 0.35,
+      "stabilize": true
+    },
+    "char_02/back/smash": {
+      "markers": {
+        "backswing": 1.9,
+        "contact": 2.25
+      },
+      "start": 1.35,
+      "end": 3.05
+    },
+    "char_02/back/split": {
+      "start": 1.64,
+      "end": 2.44
+    },
+    "char_02/back/victory": {
+      "start": 0.46,
+      "end": 3.88
+    },
+    "char_02/back/walk_in": {
+      "start": 0,
+      "end": 3.96
+    },
+    "char_02/front/bh_high": {
+      "markers": {
+        "backswing": 0.6,
+        "contact": 0.95
+      },
+      "start": 0.3,
+      "end": 1.8
+    },
+    "char_02/front/bh_low": {
+      "markers": {
+        "backswing": 0.7,
+        "contact": 1
+      },
+      "start": 0.4,
+      "end": 1.85
+    },
+    "char_02/front/bh_mid": {
+      "markers": {
+        "backswing": 0.7,
+        "contact": 1
+      },
+      "start": 0.4,
+      "end": 1.85
+    },
+    "char_02/front/defeat": {
+      "start": 0.13,
+      "end": 3.54
+    },
+    "char_02/front/fh_high": {
+      "markers": {
+        "backswing": 1.85,
+        "contact": 2.05
+      },
+      "start": 1.3,
+      "end": 2.9
+    },
+    "char_02/front/fh_low": {
+      "markers": {
+        "backswing": 1.95,
+        "contact": 2.2
+      },
+      "start": 1.4,
+      "end": 3.05
+    },
+    "char_02/front/fh_mid": {
+      "markers": {
+        "backswing": 1.9,
+        "contact": 2.15
+      },
+      "start": 1.35,
+      "end": 3
+    },
+    "char_02/front/idle": {
+      "start": 1.17,
+      "end": 2.96,
+      "stabilize": true
+    },
+    "char_02/front/point_lose": {
+      "start": 1.04,
+      "end": 3.04
+    },
+    "char_02/front/point_win": {
+      "start": 0.42,
+      "end": 2.42
+    },
+    "char_02/front/reach_bh": {
+      "markers": {
+        "backswing": 0.6,
+        "contact": 0.95
+      },
+      "start": 0.3,
+      "end": 1.8
+    },
+    "char_02/front/reach_fh": {
+      "markers": {
+        "backswing": 1.9,
+        "contact": 2.15
+      },
+      "start": 1.35,
+      "end": 3
+    },
+    "char_02/front/run_back": {
+      "loop": "pingpong",
+      "start": 0.58,
+      "end": 1.58,
+      "stabilize": true
+    },
+    "char_02/front/run_forward": {
+      "loop": "pingpong",
+      "start": 2.58,
+      "end": 3.58,
+      "stabilize": true
+    },
+    "char_02/front/run_left": {
+      "loop": "pingpong",
+      "start": 1.63,
+      "end": 2.63,
+      "stabilize": true
+    },
+    "char_02/front/run_right": {
+      "loop": "pingpong",
+      "start": 2.58,
+      "end": 3.58,
+      "stabilize": true
+    },
+    "char_02/front/serve": {
+      "markers": {
+        "toss": 1.1,
+        "contact": 2.3
+      },
+      "start": 0.9,
+      "end": 3.25
+    },
+    "char_02/front/serve_ready": {
+      "loop": "pingpong",
+      "start": 1.67,
+      "end": 3.17,
+      "stabilize": true
+    },
+    "char_02/front/smash": {
+      "markers": {
+        "backswing": 1.9,
+        "contact": 2.2
+      },
+      "start": 1.35,
+      "end": 3
+    },
+    "char_02/front/split": {
+      "start": 1.81,
+      "end": 2.61
+    },
+    "char_02/front/victory": {
+      "start": 0.13,
+      "end": 3.46
+    },
+    "char_02/front/walk_in": {
+      "start": 0.21,
+      "end": 3.83
+    },
+    "char_03/back/bh_high": {
+      "markers": {
+        "backswing": 0.7,
+        "contact": 0.85
+      },
+      "start": 0.4,
+      "end": 1.7
+    },
+    "char_03/back/bh_low": {
+      "markers": {
+        "backswing": 0.75,
+        "contact": 0.95
+      },
+      "start": 0.45,
+      "end": 1.8
+    },
+    "char_03/back/bh_mid": {
+      "markers": {
+        "backswing": 0.7,
+        "contact": 0.9
+      },
+      "start": 0.4,
+      "end": 1.75
+    },
+    "char_03/back/defeat": {
+      "start": 0.21,
+      "end": 3.29
+    },
+    "char_03/back/fh_high": {
+      "markers": {
+        "backswing": 1.9,
+        "contact": 2.1
+      },
+      "start": 1.35,
+      "end": 2.95
+    },
+    "char_03/back/fh_low": {
+      "markers": {
+        "backswing": 1.95,
+        "contact": 2.2
+      },
+      "start": 1.4,
+      "end": 3.05
+    },
+    "char_03/back/fh_mid": {
+      "markers": {
+        "backswing": 1.9,
+        "contact": 2.15
+      },
+      "start": 1.35,
+      "end": 3
+    },
+    "char_03/back/idle": {
+      "start": 0.63,
+      "end": 3.21
+    },
+    "char_03/back/point_lose": {
+      "start": 0.33,
+      "end": 2.33
+    },
+    "char_03/back/point_win": {
+      "start": 0.46,
+      "end": 2.46
+    },
+    "char_03/back/reach_bh": {
+      "markers": {
+        "backswing": 0.7,
+        "contact": 0.9
+      },
+      "start": 0.4,
+      "end": 1.75
+    },
+    "char_03/back/reach_fh": {
+      "markers": {
+        "backswing": 1.9,
+        "contact": 2.15
+      },
+      "start": 1.35,
+      "end": 3
+    },
+    "char_03/back/run_back": {
+      "start": 2.13,
+      "end": 3.79,
+      "stabilize": true
+    },
+    "char_03/back/run_forward": {
+      "start": 1.21,
+      "end": 2.88,
+      "stabilize": true
+    },
+    "char_03/back/run_left": {
+      "loop": "pingpong",
+      "start": 1.67,
+      "end": 2.67,
+      "stabilize": true
+    },
+    "char_03/back/run_right": {
+      "start": 2.25,
+      "end": 3.58,
+      "crossfade": 0.2,
+      "stabilize": true
+    },
+    "char_03/back/serve": {
+      "markers": {
+        "toss": 0.95,
+        "contact": 2.25
+      },
+      "start": 0.75,
+      "end": 3.2
+    },
+    "char_03/back/serve_ready": {
+      "loop": "pingpong",
+      "start": 0.29,
+      "end": 1.79
+    },
+    "char_03/back/smash": {
+      "markers": {
+        "backswing": 1.85,
+        "contact": 2.15
+      },
+      "start": 1.3,
+      "end": 2.95
+    },
+    "char_03/back/split": {
+      "start": 1.31,
+      "end": 2.11
+    },
+    "char_03/back/victory": {
+      "start": 0.33,
+      "end": 3.17
+    },
+    "char_03/back/walk_in": {
+      "start": 0.17,
+      "end": 3.71
+    },
+    "char_03/front/bh_high": {
+      "markers": {
+        "backswing": 0.7,
+        "contact": 0.98
+      },
+      "start": 0.4,
+      "end": 1.83
+    },
+    "char_03/front/bh_low": {
+      "markers": {
+        "backswing": 0.7,
+        "contact": 0.95
+      },
+      "start": 0.4,
+      "end": 1.8
+    },
+    "char_03/front/bh_mid": {
+      "markers": {
+        "backswing": 0.7,
+        "contact": 0.92
+      },
+      "start": 0.4,
+      "end": 1.77
+    },
+    "char_03/front/defeat": {
+      "start": 0.46,
+      "end": 3.29
+    },
+    "char_03/front/fh_high": {
+      "markers": {
+        "backswing": 1.95,
+        "contact": 2.2
+      },
+      "start": 1.4,
+      "end": 3.05
+    },
+    "char_03/front/fh_low": {
+      "markers": {
+        "backswing": 1.9,
+        "contact": 2.15
+      },
+      "start": 1.35,
+      "end": 3
+    },
+    "char_03/front/fh_mid": {
+      "markers": {
+        "backswing": 1.8,
+        "contact": 2
+      },
+      "start": 1.25,
+      "end": 2.85
+    },
+    "char_03/front/idle": {
+      "start": 1.38,
+      "end": 3.88
+    },
+    "char_03/front/point_lose": {
+      "start": 0.5,
+      "end": 2.5
+    },
+    "char_03/front/point_win": {
+      "start": 0.46,
+      "end": 2.46
+    },
+    "char_03/front/reach_bh": {
+      "markers": {
+        "backswing": 0.7,
+        "contact": 1
+      },
+      "start": 0.4,
+      "end": 1.85
+    },
+    "char_03/front/reach_fh": {
+      "markers": {
+        "backswing": 1.95,
+        "contact": 2.25
+      },
+      "start": 1.4,
+      "end": 3.1
+    },
+    "char_03/front/run_back": {
+      "loop": "pingpong",
+      "start": 0.58,
+      "end": 1.58,
+      "stabilize": true
+    },
+    "char_03/front/run_forward": {
+      "start": 1.38,
+      "end": 3,
+      "crossfade": 0.2,
+      "stabilize": true
+    },
+    "char_03/front/run_left": {
+      "loop": "pingpong",
+      "start": 1.54,
+      "end": 2.54,
+      "stabilize": true
+    },
+    "char_03/front/run_right": {
+      "start": 2.38,
+      "end": 3.38,
+      "crossfade": 0.2,
+      "stabilize": true
+    },
+    "char_03/front/serve": {
+      "markers": {
+        "toss": 0.9,
+        "contact": 2.1
+      },
+      "start": 0.7,
+      "end": 3.05
+    },
+    "char_03/front/serve_ready": {
+      "start": 1.17,
+      "end": 3.88,
+      "crossfade": 0.35,
+      "stabilize": true
+    },
+    "char_03/front/smash": {
+      "markers": {
+        "backswing": 1.5,
+        "contact": 1.85
+      },
+      "start": 0.95,
+      "end": 2.65
+    },
+    "char_03/front/split": {
+      "start": 2.73,
+      "end": 3.53
+    },
+    "char_03/front/victory": {
+      "start": 0.21,
+      "end": 3.08
+    },
+    "char_03/front/walk_in": {
+      "start": 0.13,
+      "end": 3.5
+    }
+  }
+}

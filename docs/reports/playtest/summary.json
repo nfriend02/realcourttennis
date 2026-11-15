@@ -1,0 +1,32 @@
+[
+  {
+    "run": "desktop-c1-day",
+    "layout": "desktop",
+    "character": 0,
+    "theme": "day",
+    "reachedScore": true,
+    "durationSec": 156,
+    "avgFps": 4,
+    "p95FrameMs": 567,
+    "maxFrameMs": 1133,
+    "longFrames": 478,
+    "errors": [],
+    "ballOffscreenPct": 0,
+    "final": "3:0"
+  },
+  {
+    "run": "mobile-portrait-c2-indoor",
+    "layout": "mobile-portrait",
+    "character": 1,
+    "theme": "indoor",
+    "reachedScore": true,
+    "durationSec": 40,
+    "avgFps": 16,
+    "p95FrameMs": 100,
+    "maxFrameMs": 350,
+    "longFrames": 28,
+    "errors": [],
+    "ballOffscreenPct": 1.8,
+    "final": "3:0"
+  }
+]

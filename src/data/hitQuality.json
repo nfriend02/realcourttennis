@@ -1,0 +1,13 @@
+{
+  "tiers": [
+    { "quality": "perfect", "timingMaxSec": 0.03, "offsetMax": 0.15, "inChance": 1.0, "speedMul": 1.15, "npcReturnMul": 0.5, "scatterM": 0.0, "scoreBonus": 300 },
+    { "quality": "great", "timingMaxSec": 0.07, "offsetMax": 0.35, "inChance": 0.9, "speedMul": 1.05, "npcReturnMul": 0.85, "scatterM": 0.15, "scoreBonus": 150 },
+    { "quality": "good", "timingMaxSec": 0.12, "offsetMax": 0.6, "inChance": 0.7, "speedMul": 1.0, "npcReturnMul": 1.0, "scatterM": 0.3, "scoreBonus": 50 },
+    { "quality": "weak", "timingMaxSec": 0.18, "offsetMax": 1.0, "inChance": 0.0, "speedMul": 0.9, "npcReturnMul": 1.0, "scatterM": 0.5, "scoreBonus": 0 }
+  ],
+  "zones": {
+    "A": { "spin": "topspin", "apexMul": 1.25 },
+    "B": { "spin": "flat", "apexMul": 1.0 },
+    "C": { "spin": "slice", "apexMul": 0.85 }
+  }
+}

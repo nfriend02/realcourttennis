@@ -1,0 +1,20 @@
+{
+  "image": {
+    "quality": 82,
+    "maxWidth": 1920,
+    "folders": {
+      "images/characters": { "maxWidth": 1600 },
+      "images/howto": { "maxWidth": 1280 },
+      "images/vfx": { "maxWidth": 4096, "quality": 90 },
+      "images/crowd": { "maxWidth": 4096, "quality": 88, "chromaKey": true }
+    }
+  },
+  "icon": { "size": 1024, "extraSizes": [512, 192] },
+  "key": { "similarity": 0.16, "blend": 0.06, "despillMix": 0.6 },
+  "video": {
+    "crf": 22,
+    "preset": "slow",
+    "maxWidth": 1920,
+    "audioKbps": 128
+  }
+}

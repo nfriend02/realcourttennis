@@ -1,0 +1,7 @@
+[
+  { "level": 1, "returnChance": 0.35, "speed": 4.0, "hitAccuracy": 0.5, "reactionDelaySec": 0.45, "targetStyle": "center", "smash": false, "spinWeights": { "flat": 0.8, "topspin": 0.1, "slice": 0.1 } },
+  { "level": 2, "returnChance": 0.45, "speed": 5.0, "hitAccuracy": 0.65, "reactionDelaySec": 0.38, "targetStyle": "safe_deep", "smash": false, "spinWeights": { "flat": 0.6, "topspin": 0.25, "slice": 0.15 } },
+  { "level": 3, "returnChance": 0.62, "speed": 6.0, "hitAccuracy": 0.75, "reactionDelaySec": 0.3, "targetStyle": "cross", "smash": false, "spinWeights": { "flat": 0.45, "topspin": 0.35, "slice": 0.2 } },
+  { "level": 4, "returnChance": 0.72, "speed": 7.0, "hitAccuracy": 0.85, "reactionDelaySec": 0.22, "targetStyle": "corners", "smash": false, "spinWeights": { "flat": 0.45, "topspin": 0.35, "slice": 0.2 } },
+  { "level": 5, "returnChance": 0.86, "speed": 8.0, "hitAccuracy": 0.95, "reactionDelaySec": 0.15, "targetStyle": "corners_smash", "smash": true, "spinWeights": { "flat": 0.5, "topspin": 0.3, "slice": 0.2 } }
+]

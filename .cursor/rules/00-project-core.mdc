@@ -1,0 +1,11 @@
+---
+description: Real Court Tennis core rules
+alwaysApply: true
+---
+- Source of truth: 07_Cursor_AI_Agent_Master_Execution_Prompt_realcourttennis.md + docs/ADR.md + docs/DECISIONS.md. Stack is Web 3D (Vite + TypeScript + Three.js + DOM UI), see ADR-001.
+- 100% English code, comments, identifiers, logs, commit messages. User-facing text only via i18n keys (ko/en/ja) in src/i18n/strings.
+- src/game/physics, src/game/ai, src/game/match are pure TypeScript: no DOM, no Three.js, no Date.now/Math.random (use IRandom and sim time). Cover them with Vitest.
+- All balance values live in src/data/*.json. No magic numbers in gameplay code.
+- No allocations in per-frame hot paths where avoidable (reuse vectors, preallocated buffers).
+- Never commit secrets (.env.local). Admin UI only for server-side admin role.
+- Record decisions in docs/DECISIONS.md; report before changing stack or scope.

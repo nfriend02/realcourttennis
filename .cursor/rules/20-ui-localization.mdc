@@ -1,0 +1,9 @@
+---
+description: Layout, UI and localization rules
+globs: src/app/**,src/styles/**,src/i18n/**,src/layout/**
+---
+- Layout-specific styles use html[data-layout='desktop'|'mobile-landscape'|'mobile-portrait'] and html[data-hand='right'|'left'] selectors only.
+- Touch targets >= 44px, text >= 12px, zero overlap, respect env(safe-area-inset-*), use var(--sys-h) below the system bar.
+- Right-handed default: movement pad LEFT, stroke buttons RIGHT (backhand column left, forehand column right). Left-handed mirrors and swaps columns.
+- Every visible string has a key in ko.ts (source), en.ts, ja.ts. ja must be natural Japanese (no Hangul).
+- Gameplay touch/click is accepted only on: movement pad, 6 stroke buttons, sound, home, language, and match flow buttons (Skip / View Score / Home confirm dialog) (X35).

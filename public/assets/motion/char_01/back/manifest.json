@@ -1,0 +1,361 @@
+{
+  "version": 2,
+  "charId": "char_01",
+  "view": "back",
+  "cellW": 308,
+  "cellH": 240,
+  "frameWidthM": 2.5025,
+  "frameHeightM": 1.95,
+  "anchorX": 0.4957,
+  "footY": 0.9556,
+  "clips": {
+    "bh_high": {
+      "file": "bh_high.webp",
+      "cols": 5,
+      "rows": 6,
+      "frames": 27,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.3,
+        "contact": 0.5
+      }
+    },
+    "bh_low": {
+      "file": "bh_low.webp",
+      "cols": 5,
+      "rows": 6,
+      "frames": 28,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.3,
+        "contact": 0.55
+      }
+    },
+    "bh_mid": {
+      "file": "bh_mid.webp",
+      "cols": 5,
+      "rows": 6,
+      "frames": 29,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.3,
+        "contact": 0.55
+      }
+    },
+    "defeat": {
+      "file": "defeat.webp",
+      "cols": 6,
+      "rows": 7,
+      "frames": 42,
+      "fps": 12,
+      "loop": "once",
+      "markers": {}
+    },
+    "fh_high": {
+      "file": "fh_high.webp",
+      "cols": 6,
+      "rows": 6,
+      "frames": 33,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.55,
+        "contact": 0.8
+      }
+    },
+    "fh_low": {
+      "file": "fh_low.webp",
+      "cols": 5,
+      "rows": 7,
+      "frames": 31,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.55,
+        "contact": 0.7
+      }
+    },
+    "fh_mid": {
+      "file": "fh_mid.webp",
+      "cols": 5,
+      "rows": 7,
+      "frames": 32,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.55,
+        "contact": 0.75
+      }
+    },
+    "idle": {
+      "file": "idle.webp",
+      "cols": 5,
+      "rows": 7,
+      "frames": 31,
+      "fps": 12,
+      "loop": "pingpong",
+      "markers": {},
+      "dx": [
+        -0.014,
+        -0.017,
+        -0.023,
+        -0.019,
+        -0.024,
+        -0.021,
+        -0.018,
+        0.006,
+        0.028,
+        0.047,
+        0.052,
+        0.048,
+        0.049,
+        0.038,
+        0.017,
+        -0.007,
+        -0.019,
+        -0.023,
+        -0.021,
+        -0.006,
+        0.013,
+        0.029,
+        0.032,
+        0.038,
+        0.04,
+        0.029,
+        0.007,
+        -0.016,
+        -0.032,
+        -0.029,
+        -0.024
+      ]
+    },
+    "point_lose": {
+      "file": "point_lose.webp",
+      "cols": 5,
+      "rows": 5,
+      "frames": 24,
+      "fps": 12,
+      "loop": "once",
+      "markers": {}
+    },
+    "point_win": {
+      "file": "point_win.webp",
+      "cols": 5,
+      "rows": 5,
+      "frames": 24,
+      "fps": 12,
+      "loop": "once",
+      "markers": {}
+    },
+    "reach_fh": {
+      "file": "reach_fh.webp",
+      "cols": 5,
+      "rows": 7,
+      "frames": 32,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.55,
+        "contact": 0.75
+      }
+    },
+    "run_back": {
+      "file": "run_back.webp",
+      "cols": 5,
+      "rows": 5,
+      "frames": 23,
+      "fps": 15,
+      "loop": "loop",
+      "markers": {},
+      "dx": [
+        -0.046,
+        -0.042,
+        -0.025,
+        -0.005,
+        0.008,
+        0.013,
+        0.007,
+        -0.018,
+        -0.057,
+        -0.085,
+        -0.084,
+        -0.069,
+        -0.045,
+        -0.022,
+        0.006,
+        0.025,
+        0.037,
+        0.042,
+        0.04,
+        0.03,
+        0.013,
+        -0.006,
+        -0.017
+      ]
+    },
+    "run_forward": {
+      "file": "run_forward.webp",
+      "cols": 5,
+      "rows": 6,
+      "frames": 26,
+      "fps": 15,
+      "loop": "loop",
+      "markers": {}
+    },
+    "run_left": {
+      "file": "run_left.webp",
+      "cols": 4,
+      "rows": 4,
+      "frames": 15,
+      "fps": 15,
+      "loop": "pingpong",
+      "markers": {},
+      "dx": [
+        0.133,
+        0.116,
+        0.089,
+        0.078,
+        0.078,
+        0.078,
+        0.065,
+        0.032,
+        0.012,
+        -0.003,
+        -0.011,
+        -0.024,
+        -0.045,
+        -0.072,
+        -0.097
+      ]
+    },
+    "run_right": {
+      "file": "run_right.webp",
+      "cols": 5,
+      "rows": 5,
+      "frames": 21,
+      "fps": 15,
+      "loop": "loop",
+      "markers": {},
+      "dx": [
+        -0.206,
+        -0.167,
+        -0.1,
+        -0.064,
+        -0.071,
+        -0.141,
+        -0.197,
+        -0.201,
+        -0.159,
+        -0.113,
+        -0.117,
+        -0.151,
+        -0.191,
+        -0.196,
+        -0.145,
+        -0.082,
+        -0.039,
+        -0.08,
+        -0.157,
+        -0.198,
+        -0.19
+      ]
+    },
+    "serve": {
+      "file": "serve.webp",
+      "cols": 7,
+      "rows": 7,
+      "frames": 49,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "toss": 0.2,
+        "contact": 1.5
+      }
+    },
+    "serve_ready": {
+      "file": "serve_ready.webp",
+      "cols": 5,
+      "rows": 7,
+      "frames": 32,
+      "fps": 12,
+      "loop": "loop",
+      "markers": {},
+      "dx": [
+        -0.009,
+        -0.017,
+        -0.041,
+        -0.075,
+        -0.097,
+        -0.098,
+        -0.091,
+        -0.078,
+        -0.071,
+        -0.055,
+        -0.036,
+        -0.013,
+        -0.008,
+        -0.011,
+        -0.02,
+        -0.02,
+        -0.013,
+        0.014,
+        0.044,
+        0.075,
+        0.089,
+        0.098,
+        0.105,
+        0.097,
+        0.076,
+        0.045,
+        0.025,
+        0.017,
+        0.015,
+        0.014,
+        0.011,
+        0.009
+      ]
+    },
+    "smash": {
+      "file": "smash.webp",
+      "cols": 6,
+      "rows": 6,
+      "frames": 33,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.55,
+        "contact": 0.85
+      }
+    },
+    "split": {
+      "file": "split.webp",
+      "cols": 4,
+      "rows": 4,
+      "frames": 16,
+      "fps": 20,
+      "loop": "once",
+      "markers": {}
+    },
+    "victory": {
+      "file": "victory.webp",
+      "cols": 6,
+      "rows": 7,
+      "frames": 42,
+      "fps": 12,
+      "loop": "once",
+      "markers": {}
+    },
+    "walk_in": {
+      "file": "walk_in.webp",
+      "cols": 7,
+      "rows": 7,
+      "frames": 48,
+      "fps": 12,
+      "loop": "once",
+      "markers": {}
+    }
+  }
+}

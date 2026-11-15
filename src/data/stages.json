@@ -1,0 +1,12 @@
+[
+  { "stageId": 1, "npcLevel": 1, "ballSpeedMul": 0.8, "courtTheme": "day", "npcSlot": "a", "strokeHint": true, "bgm": "court_day" },
+  { "stageId": 2, "npcLevel": 1, "ballSpeedMul": 0.85, "courtTheme": "day", "npcSlot": "b", "strokeHint": true, "bgm": "court_day" },
+  { "stageId": 3, "npcLevel": 2, "ballSpeedMul": 0.9, "courtTheme": "day", "npcSlot": "a", "strokeHint": false, "bgm": "court_day" },
+  { "stageId": 4, "npcLevel": 2, "ballSpeedMul": 0.95, "courtTheme": "sunset", "npcSlot": "b", "strokeHint": false, "bgm": "court_day" },
+  { "stageId": 5, "npcLevel": 3, "ballSpeedMul": 1.0, "courtTheme": "sunset", "npcSlot": "a", "strokeHint": false, "bgm": "court_day" },
+  { "stageId": 6, "npcLevel": 3, "ballSpeedMul": 1.05, "courtTheme": "indoor", "npcSlot": "b", "strokeHint": false, "bgm": "court_day" },
+  { "stageId": 7, "npcLevel": 4, "ballSpeedMul": 1.1, "courtTheme": "indoor", "npcSlot": "a", "strokeHint": false, "bgm": "court_day" },
+  { "stageId": 8, "npcLevel": 4, "ballSpeedMul": 1.15, "courtTheme": "night", "npcSlot": "b", "strokeHint": false, "bgm": "court_night" },
+  { "stageId": 9, "npcLevel": 5, "ballSpeedMul": 1.22, "courtTheme": "night", "npcSlot": "a", "strokeHint": false, "bgm": "court_night" },
+  { "stageId": 10, "npcLevel": 5, "ballSpeedMul": 1.3, "courtTheme": "night", "npcSlot": "b", "strokeHint": false, "bgm": "court_night" }
+]

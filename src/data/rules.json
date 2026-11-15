@@ -1,0 +1,41 @@
+{
+  "match": {
+    "pointsToWin": 3,
+    "winByTwo": false,
+    "firstServer": "player",
+    "serveRule": "simplified",
+    "serveAttempts": 2,
+    "pointPauseSec": 1.6,
+    "npcServeDelaySec": 1.2,
+    "npcErrorWeights": { "net": 0.4, "long": 0.3, "wide": 0.3 },
+    "npcSmashHeightM": 2.0,
+    "npcSmashSpeedMul": 1.35,
+    "npcScatterBaseM": 3.0,
+    "npcCourtClampM": 0.3,
+    "npcServeSpeed": 20.0,
+    "npcBaseShotSpeed": 18.0,
+    "npcContactHeightMin": 0.3,
+    "npcContactHeightMax": 2.2,
+    "npcHomeZ": 12.6,
+    "playerHomeZ": -12.9
+  },
+  "score": {
+    "pointWon": 1000,
+    "winner": 200,
+    "ace": 500,
+    "rallyPerHit": 20,
+    "matchWinBase": 3000,
+    "matchWinPerStage": 500,
+    "shutoutBonus": 1500,
+    "freeLevelMul": [0.6, 0.8, 1.0, 1.2, 1.4]
+  },
+  "ballFlight": {
+    "levelSec": [5.0, 4.0, 3.0, 2.0, 1.0],
+    "defaultLevel": 3,
+    "minPlaneDistM": 3.0,
+    "scaleMin": 0.4,
+    "scaleMax": 8.0
+  },
+  "replayMode": "player_winners",
+  "autoDetectLanguage": false
+}

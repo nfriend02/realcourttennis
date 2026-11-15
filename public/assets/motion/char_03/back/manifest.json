@@ -1,0 +1,331 @@
+{
+  "version": 2,
+  "charId": "char_03",
+  "view": "back",
+  "cellW": 420,
+  "cellH": 240,
+  "frameWidthM": 3.8455,
+  "frameHeightM": 2.1974,
+  "anchorX": 0.5063,
+  "footY": 0.9556,
+  "clips": {
+    "bh_high": {
+      "file": "bh_high.webp",
+      "cols": 4,
+      "rows": 7,
+      "frames": 27,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.3,
+        "contact": 0.45
+      }
+    },
+    "bh_low": {
+      "file": "bh_low.webp",
+      "cols": 4,
+      "rows": 7,
+      "frames": 28,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.3,
+        "contact": 0.5
+      }
+    },
+    "bh_mid": {
+      "file": "bh_mid.webp",
+      "cols": 4,
+      "rows": 7,
+      "frames": 28,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.3,
+        "contact": 0.5
+      }
+    },
+    "defeat": {
+      "file": "defeat.webp",
+      "cols": 5,
+      "rows": 8,
+      "frames": 37,
+      "fps": 12,
+      "loop": "once",
+      "markers": {}
+    },
+    "fh_high": {
+      "file": "fh_high.webp",
+      "cols": 5,
+      "rows": 7,
+      "frames": 32,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.55,
+        "contact": 0.75
+      }
+    },
+    "fh_low": {
+      "file": "fh_low.webp",
+      "cols": 5,
+      "rows": 7,
+      "frames": 34,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.55,
+        "contact": 0.8
+      }
+    },
+    "fh_mid": {
+      "file": "fh_mid.webp",
+      "cols": 5,
+      "rows": 7,
+      "frames": 33,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.55,
+        "contact": 0.8
+      }
+    },
+    "idle": {
+      "file": "idle.webp",
+      "cols": 5,
+      "rows": 7,
+      "frames": 31,
+      "fps": 12,
+      "loop": "pingpong",
+      "markers": {}
+    },
+    "point_lose": {
+      "file": "point_lose.webp",
+      "cols": 4,
+      "rows": 6,
+      "frames": 24,
+      "fps": 12,
+      "loop": "once",
+      "markers": {}
+    },
+    "point_win": {
+      "file": "point_win.webp",
+      "cols": 4,
+      "rows": 6,
+      "frames": 24,
+      "fps": 12,
+      "loop": "once",
+      "markers": {}
+    },
+    "reach_bh": {
+      "file": "reach_bh.webp",
+      "cols": 4,
+      "rows": 7,
+      "frames": 28,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.3,
+        "contact": 0.5
+      }
+    },
+    "reach_fh": {
+      "file": "reach_fh.webp",
+      "cols": 5,
+      "rows": 7,
+      "frames": 33,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.55,
+        "contact": 0.8
+      }
+    },
+    "run_back": {
+      "file": "run_back.webp",
+      "cols": 4,
+      "rows": 7,
+      "frames": 25,
+      "fps": 15,
+      "loop": "loop",
+      "markers": {},
+      "dx": [
+        -0.088,
+        -0.07,
+        -0.041,
+        -0.003,
+        0.012,
+        0.001,
+        -0.007,
+        -0.017,
+        -0.024,
+        -0.055,
+        -0.076,
+        -0.076,
+        -0.068,
+        -0.062,
+        -0.06,
+        -0.03,
+        -0.003,
+        0.004,
+        -0.013,
+        -0.019,
+        -0.021,
+        -0.041,
+        -0.072,
+        -0.086,
+        -0.074
+      ]
+    },
+    "run_forward": {
+      "file": "run_forward.webp",
+      "cols": 4,
+      "rows": 7,
+      "frames": 25,
+      "fps": 15,
+      "loop": "loop",
+      "markers": {},
+      "dx": [
+        0.011,
+        0.003,
+        0.001,
+        -0.005,
+        -0.004,
+        -0.028,
+        -0.047,
+        -0.055,
+        -0.042,
+        -0.034,
+        -0.028,
+        -0.001,
+        0.028,
+        0.033,
+        0.012,
+        0.003,
+        0,
+        -0.008,
+        -0.04,
+        -0.057,
+        -0.055,
+        -0.042,
+        -0.028,
+        -0.007,
+        0.02
+      ]
+    },
+    "run_left": {
+      "file": "run_left.webp",
+      "cols": 3,
+      "rows": 5,
+      "frames": 15,
+      "fps": 15,
+      "loop": "pingpong",
+      "markers": {},
+      "dx": [
+        -0.084,
+        -0.051,
+        -0.001,
+        0.074,
+        0.123,
+        0.179,
+        0.213,
+        0.236,
+        0.212,
+        0.17,
+        0.097,
+        0.001,
+        -0.098,
+        -0.182,
+        -0.224
+      ]
+    },
+    "run_right": {
+      "file": "run_right.webp",
+      "cols": 4,
+      "rows": 5,
+      "frames": 17,
+      "fps": 15,
+      "loop": "loop",
+      "markers": {},
+      "dx": [
+        -0.065,
+        0.022,
+        0.001,
+        -0.208,
+        -0.344,
+        -0.22,
+        -0.025,
+        0.03,
+        -0.122,
+        -0.277,
+        -0.15,
+        -0.002,
+        0.015,
+        -0.196,
+        -0.32,
+        -0.301,
+        -0.223
+      ]
+    },
+    "serve": {
+      "file": "serve.webp",
+      "cols": 6,
+      "rows": 9,
+      "frames": 49,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "toss": 0.2,
+        "contact": 1.5
+      }
+    },
+    "serve_ready": {
+      "file": "serve_ready.webp",
+      "cols": 4,
+      "rows": 5,
+      "frames": 18,
+      "fps": 12,
+      "loop": "pingpong",
+      "markers": {}
+    },
+    "smash": {
+      "file": "smash.webp",
+      "cols": 5,
+      "rows": 7,
+      "frames": 33,
+      "fps": 20,
+      "loop": "once",
+      "markers": {
+        "backswing": 0.55,
+        "contact": 0.85
+      }
+    },
+    "split": {
+      "file": "split.webp",
+      "cols": 4,
+      "rows": 5,
+      "frames": 17,
+      "fps": 20,
+      "loop": "once",
+      "markers": {}
+    },
+    "victory": {
+      "file": "victory.webp",
+      "cols": 5,
+      "rows": 7,
+      "frames": 35,
+      "fps": 12,
+      "loop": "once",
+      "markers": {}
+    },
+    "walk_in": {
+      "file": "walk_in.webp",
+      "cols": 5,
+      "rows": 9,
+      "frames": 43,
+      "fps": 12,
+      "loop": "once",
+      "markers": {}
+    }
+  }
+}
