@@ -31,6 +31,18 @@ export interface UserProfile {
   selectedCharacter: string;
   mileage: number;
   freeBest: number;
+  /** From Firestore `admins` allowlist (never client-writable role field). */
+  isAdmin: boolean;
+}
+
+export type AdminKind = 'email' | 'phone';
+
+export interface AdminEntry {
+  id: string;
+  loginId: string;
+  kind: AdminKind;
+  label?: string;
+  personId?: string;
 }
 
 export interface StageProgress {
@@ -79,6 +91,10 @@ export interface Backend {
   deleteAccount(): Promise<void>;
   getProgress(): Promise<StageProgress[]>;
   submitMatch(r: MatchResultInput): Promise<MatchSubmitResult>;
+  /** Admin allowlist (Firestore `admins`). Only existing admins may mutate. */
+  listAdmins(): Promise<AdminEntry[]>;
+  addAdmin(kind: AdminKind, loginId: string, opts?: { label?: string; personId?: string }): Promise<AdminEntry>;
+  removeAdmin(adminDocId: string): Promise<void>;
 }
 
 export const NICKNAME_RE = /^[\p{L}\p{N}_]{2,12}$/u;

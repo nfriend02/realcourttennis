@@ -25,6 +25,9 @@ class LazyFirebaseBackend implements Backend {
   deleteAccount: Backend['deleteAccount'] = async () => (await this.get()).deleteAccount();
   getProgress: Backend['getProgress'] = async () => (await this.get()).getProgress();
   submitMatch: Backend['submitMatch'] = async (r) => (await this.get()).submitMatch(r);
+  listAdmins: Backend['listAdmins'] = async () => (await this.get()).listAdmins();
+  addAdmin: Backend['addAdmin'] = async (k, id, o) => (await this.get()).addAdmin(k, id, o);
+  removeAdmin: Backend['removeAdmin'] = async (id) => (await this.get()).removeAdmin(id);
 }
 
 /** Firebase when configured via env, otherwise the localStorage MockBackend (X05, ADR-002). */

@@ -34,8 +34,11 @@ import {
   writeBatch,
 } from 'firebase/firestore';
 import { MAX_STAGE } from '../data/gameData';
+import { normalizeAdminKey, phoneAliasAdminKey } from './adminIds';
 import {
   type AccountType,
+  type AdminEntry,
+  type AdminKind,
   AuthError,
   type AuthErrorCode,
   type Backend,
@@ -132,7 +135,23 @@ export class FirebaseBackend implements Backend {
 
   private async readProfile(user: User): Promise<UserProfile | null> {
     const snap = await getDoc(this.profileRef(user.uid));
-    return snap.exists() ? toProfile(user, snap.data() as ProfileDoc) : null;
+    if (!snap.exists()) return null;
+    const base = toProfile(user, snap.data() as ProfileDoc);
+    return { ...base, isAdmin: await this.isAdminUser(user, base) };
+  }
+
+  private async isAdminUser(user: User, profile: UserProfile): Promise<boolean> {
+    const keys = new Set<string>();
+    if (user.email) keys.add(user.email.trim().toLowerCase());
+    if (profile.loginId) keys.add(profile.loginId.trim().toLowerCase());
+    if (profile.accountType === 'phone' && profile.loginId) {
+      keys.add(phoneAliasAdminKey(profile.loginId, this.env.phoneAliasDomain));
+    }
+    for (const key of keys) {
+      const snap = await getDoc(doc(this.db, 'admins', key)).catch(() => null);
+      if (snap?.exists()) return true;
+    }
+    return false;
   }
 
   private async ensureProfile(user: User, username: string, type: AccountType): Promise<UserProfile> {
@@ -158,7 +177,76 @@ export class FirebaseBackend implements Backend {
     await batch.commit().catch((e: unknown) => {
       throw new AuthError(type === 'guest' && code(e) === 'permission-denied' ? 'nicknameTaken' : mapError(e));
     });
-    return toProfile(user, data);
+    const base = toProfile(user, data);
+    return { ...base, isAdmin: await this.isAdminUser(user, base) };
+  }
+
+  async listAdmins(): Promise<AdminEntry[]> {
+    const user = this.auth.currentUser;
+    if (!user) throw new AuthError('recentLogin');
+    const me = await this.readProfile(user);
+    if (!me?.isAdmin) throw new AuthError('unsupported');
+    const snap = await getDocs(collection(this.db, 'admins'));
+    const out: AdminEntry[] = [];
+    snap.forEach((d) => {
+      const data = d.data() as { loginId?: string; kind?: AdminKind; label?: string; personId?: string; aliasOf?: string };
+      if (data.aliasOf) return; // skip phone Auth-token mirror docs in the UI list
+      out.push({
+        id: d.id,
+        loginId: data.loginId ?? d.id,
+        kind: data.kind === 'phone' ? 'phone' : 'email',
+        label: data.label,
+        personId: data.personId,
+      });
+    });
+    return out.sort((a, b) => a.loginId.localeCompare(b.loginId));
+  }
+
+  async addAdmin(kind: AdminKind, loginId: string, opts: { label?: string; personId?: string } = {}): Promise<AdminEntry> {
+    const user = this.auth.currentUser;
+    if (!user) throw new AuthError('recentLogin');
+    const me = await this.readProfile(user);
+    if (!me?.isAdmin) throw new AuthError('unsupported');
+    const key = normalizeAdminKey(kind, loginId, this.env.phoneAliasDomain);
+    const batch = writeBatch(this.db);
+    const body = {
+      loginId: key,
+      kind,
+      label: opts.label ?? '',
+      personId: opts.personId ?? '',
+      createdAt: serverTimestamp(),
+      createdBy: user.uid,
+    };
+    batch.set(doc(this.db, 'admins', key), body, { merge: true });
+    if (kind === 'phone') {
+      const alias = phoneAliasAdminKey(key, this.env.phoneAliasDomain);
+      batch.set(doc(this.db, 'admins', alias), { ...body, loginId: key, aliasOf: key }, { merge: true });
+    }
+    await batch.commit().catch((e: unknown) => {
+      throw new AuthError(mapError(e));
+    });
+    return { id: key, loginId: key, kind, label: opts.label, personId: opts.personId };
+  }
+
+  async removeAdmin(adminDocId: string): Promise<void> {
+    const user = this.auth.currentUser;
+    if (!user) throw new AuthError('recentLogin');
+    const me = await this.readProfile(user);
+    if (!me?.isAdmin) throw new AuthError('unsupported');
+    const id = adminDocId.trim().toLowerCase();
+    const snap = await getDoc(doc(this.db, 'admins', id));
+    if (!snap.exists()) return;
+    const data = snap.data() as { kind?: string; loginId?: string; aliasOf?: string };
+    const batch = writeBatch(this.db);
+    batch.delete(doc(this.db, 'admins', id));
+    const primary = data.aliasOf || data.loginId || id;
+    if (data.kind === 'phone' || primary !== id) {
+      batch.delete(doc(this.db, 'admins', primary));
+      batch.delete(doc(this.db, 'admins', phoneAliasAdminKey(primary.replace(/\D/g, ''), this.env.phoneAliasDomain)));
+    }
+    await batch.commit().catch((e: unknown) => {
+      throw new AuthError(mapError(e));
+    });
   }
 
   private aliasEmail(kind: 'email' | 'phone', id: string): string {
@@ -447,6 +535,7 @@ function toProfile(user: User, d: ProfileDoc): UserProfile {
     selectedCharacter: d.selectedCharacter,
     mileage: Number(d.mileage),
     freeBest: d.freeBest,
+    isAdmin: false,
   };
 }
 

@@ -178,6 +178,7 @@ export class App {
 
   async afterLogin(u: UserProfile): Promise<void> {
     this.user = u;
+    document.documentElement.dataset.admin = u.isAdmin ? '1' : '0';
     settings.beginSession(u.id);
     settings.hand = u.handedness;
     this.selection.characterId = u.selectedCharacter;
@@ -213,6 +214,7 @@ export class App {
     await backend.logout().catch(() => undefined);
     this.user = null;
     this.progress = [];
+    document.documentElement.dataset.admin = '0';
     settings.endSession();
     this.go('title');
   }

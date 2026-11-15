@@ -1,6 +1,9 @@
 import { MAX_STAGE } from '../data/gameData';
+import { normalizeAdminKey, phoneAliasAdminKey, SEED_ADMINS } from './adminIds';
 import {
   type AccountType,
+  type AdminEntry,
+  type AdminKind,
   AuthError,
   type Backend,
   EMAIL_RE,
@@ -12,7 +15,7 @@ import {
   type UserProfile,
 } from './types';
 
-interface MockUser extends UserProfile {
+interface MockUser extends Omit<UserProfile, 'isAdmin'> {
   pwHash: string;
   stages: Record<number, StageProgress>;
   highScore: number;
@@ -25,7 +28,9 @@ interface MockUser extends UserProfile {
 
 const USERS_KEY = 'rct.mock.users';
 const SESSION_KEY = 'rct.mock.session';
+const ADMINS_KEY = 'rct.mock.admins';
 const GUEST_TTL_MS = 100 * 24 * 3600 * 1000;
+const PHONE_ALIAS_DOMAIN = 'realcourttennis.app';
 
 async function sha256(text: string): Promise<string> {
   if (globalThis.crypto?.subtle) {
@@ -72,6 +77,32 @@ export class MockBackend implements Backend {
     return this.toProfile(u);
   }
 
+  private loadAdmins(): AdminEntry[] {
+    try {
+      const raw = localStorage.getItem(ADMINS_KEY);
+      if (!raw) {
+        const seeded = seedMockAdmins();
+        localStorage.setItem(ADMINS_KEY, JSON.stringify(seeded));
+        return seeded;
+      }
+      return JSON.parse(raw) as AdminEntry[];
+    } catch {
+      return seedMockAdmins();
+    }
+  }
+
+  private saveAdmins(list: AdminEntry[]): void {
+    localStorage.setItem(ADMINS_KEY, JSON.stringify(list));
+  }
+
+  private isAdminLogin(loginId: string, accountType: AccountType): boolean {
+    const admins = this.loadAdmins();
+    const keys = new Set(admins.map((a) => a.id));
+    if (loginId && keys.has(loginId.toLowerCase())) return true;
+    if (accountType === 'phone' && loginId && keys.has(phoneAliasAdminKey(loginId, PHONE_ALIAS_DOMAIN))) return true;
+    return false;
+  }
+
   private toProfile(u: MockUser): UserProfile {
     return {
       id: u.id,
@@ -83,6 +114,7 @@ export class MockBackend implements Backend {
       selectedCharacter: u.selectedCharacter,
       mileage: u.mileage,
       freeBest: u.freeBest,
+      isAdmin: this.isAdminLogin(u.loginId, u.accountType),
     };
   }
 
@@ -240,4 +272,44 @@ export class MockBackend implements Backend {
     }
     return { best, newBest, rank, mileage: u.mileage };
   }
+
+  async listAdmins(): Promise<AdminEntry[]> {
+    const me = this.me();
+    if (!this.toProfile(me).isAdmin) throw new AuthError('unsupported');
+    return this.loadAdmins().filter((a) => !a.id.includes('@phone.'));
+  }
+
+  async addAdmin(kind: AdminKind, loginId: string, opts: { label?: string; personId?: string } = {}): Promise<AdminEntry> {
+    const me = this.me();
+    if (!this.toProfile(me).isAdmin) throw new AuthError('unsupported');
+    const key = normalizeAdminKey(kind, loginId, PHONE_ALIAS_DOMAIN);
+    const list = this.loadAdmins().filter((a) => a.id !== key && a.id !== phoneAliasAdminKey(key, PHONE_ALIAS_DOMAIN));
+    const entry: AdminEntry = { id: key, loginId: key, kind, label: opts.label, personId: opts.personId };
+    list.push(entry);
+    if (kind === 'phone') {
+      list.push({ ...entry, id: phoneAliasAdminKey(key, PHONE_ALIAS_DOMAIN) });
+    }
+    this.saveAdmins(list);
+    return entry;
+  }
+
+  async removeAdmin(adminDocId: string): Promise<void> {
+    const me = this.me();
+    if (!this.toProfile(me).isAdmin) throw new AuthError('unsupported');
+    const id = adminDocId.trim().toLowerCase();
+    const list = this.loadAdmins().filter((a) => a.id !== id && a.loginId !== id && !a.id.startsWith(id + '@'));
+    this.saveAdmins(list);
+  }
+}
+
+function seedMockAdmins(): AdminEntry[] {
+  const out: AdminEntry[] = [];
+  for (const s of SEED_ADMINS) {
+    const key = normalizeAdminKey(s.kind, s.raw, PHONE_ALIAS_DOMAIN);
+    out.push({ id: key, loginId: key, kind: s.kind, label: s.label, personId: s.personId });
+    if (s.kind === 'phone') {
+      out.push({ id: phoneAliasAdminKey(key, PHONE_ALIAS_DOMAIN), loginId: key, kind: 'phone', label: s.label, personId: s.personId });
+    }
+  }
+  return out;
 }
