@@ -1,0 +1,32 @@
+rules_version = '2';
+
+// Real Court Tennis — Cloud Storage rules (asia-northeast3 / default bucket).
+// v1: only the signed-in owner may read/write under users/{uid}/.
+// Public game assets stay in the web app / CDN, not in user Storage.
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    function signedIn() {
+      return request.auth != null;
+    }
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+    function underSize(maxBytes) {
+      return request.resource.size < maxBytes;
+    }
+
+    match /users/{uid}/{allPaths=**} {
+      allow read: if isOwner(uid);
+      // Delete has no request.resource — keep create/update size & type checks separate.
+      allow create, update: if isOwner(uid)
+        && underSize(5 * 1024 * 1024)
+        && request.resource.contentType.matches('image/.*|application/json|text/plain');
+      allow delete: if isOwner(uid);
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

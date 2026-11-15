@@ -53,6 +53,11 @@ export interface FirebaseEnv {
   authDomain: string;
   projectId: string;
   appId: string;
+  /** Named Firestore DB id (Seoul). Defaults to projectId when set in env. */
+  firestoreDatabaseId?: string;
+  storageBucket?: string;
+  messagingSenderId?: string;
+  measurementId?: string;
   phoneAliasDomain: string;
 }
 
@@ -95,9 +100,22 @@ export class FirebaseBackend implements Backend {
   private readonly db: Firestore;
 
   constructor(private readonly env: FirebaseEnv) {
-    this.app = initializeApp({ apiKey: env.apiKey, authDomain: env.authDomain, projectId: env.projectId, appId: env.appId });
+    this.app = initializeApp({
+      apiKey: env.apiKey,
+      authDomain: env.authDomain,
+      projectId: env.projectId,
+      appId: env.appId,
+      storageBucket: env.storageBucket,
+      messagingSenderId: env.messagingSenderId,
+      measurementId: env.measurementId,
+    });
     this.auth = getAuth(this.app);
-    this.db = initializeFirestore(this.app, { localCache: persistentLocalCache() });
+    // Project uses a named DB in asia-northeast3 (not the "(default)" database).
+    const dbId = env.firestoreDatabaseId || env.projectId;
+    this.db =
+      dbId === '(default)'
+        ? initializeFirestore(this.app, { localCache: persistentLocalCache() })
+        : initializeFirestore(this.app, { localCache: persistentLocalCache() }, dbId);
   }
 
   // ------------------------------------------------------------ helpers

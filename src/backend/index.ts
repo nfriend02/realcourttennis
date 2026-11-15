@@ -39,6 +39,10 @@ export function createBackend(): Backend {
       projectId,
       appId,
       authDomain: (env.VITE_FIREBASE_AUTH_DOMAIN as string | undefined) || `${projectId}.firebaseapp.com`,
+      firestoreDatabaseId: (env.VITE_FIRESTORE_DATABASE_ID as string | undefined) || projectId,
+      storageBucket: env.VITE_FIREBASE_STORAGE_BUCKET as string | undefined,
+      messagingSenderId: env.VITE_FIREBASE_MESSAGING_SENDER_ID as string | undefined,
+      measurementId: env.VITE_FIREBASE_MEASUREMENT_ID as string | undefined,
       phoneAliasDomain: (env.VITE_PHONE_ALIAS_DOMAIN as string | undefined) || 'realcourttennis.app',
     });
   }

@@ -1,7 +1,14 @@
 {
-  "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
+  "firestore": [
+    {
+      "database": "realcourttennis",
+      "rules": "firestore.rules",
+      "indexes": "firestore.indexes.json"
+    }
+  ],
+  "storage": {
+    "rules": "storage.rules",
+    "bucket": "realcourttennis.firebasestorage.app"
   },
   "hosting": {
     "public": "dist",
