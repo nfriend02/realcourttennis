@@ -8,7 +8,7 @@ export interface HudProfile {
   sysBtnPx: number;
   btnPx: number;
   sysGapPx: number;
-  /** Portrait stacks the system bar into two readable rows. */
+  /** System bar row count (1 = single strip; 2 kept for optional stacked layout). */
   sysbarRows: 1 | 2;
   scoreboardScale: number;
   controlPadMaxVw: number;
@@ -32,10 +32,10 @@ export const HUD_PROFILES: Record<LayoutProfile, HudProfile> = {
     controlPadMaxVw: 28,
   },
   'mobile-portrait': {
-    sysBtnPx: 44,
-    btnPx: 60,
-    sysGapPx: 8,
-    sysbarRows: 2,
+    sysBtnPx: 36,
+    btnPx: 56,
+    sysGapPx: 4,
+    sysbarRows: 1,
     scoreboardScale: 0.9,
     controlPadMaxVw: 45,
   },

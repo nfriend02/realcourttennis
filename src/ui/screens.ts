@@ -469,11 +469,12 @@ export function scoreScreen(app: App): Screen {
   const won = o.input.won;
   const card = h('div.card.score-card');
   card.classList.toggle('won', won);
-  card.append(tx('h2', 'score.title'));
-  card.append(tx('div.result-banner', won ? 'result.win' : 'result.lose'));
-  card.append(h('div.final-points', {}, h('b', {}, String(o.playerScore)), h('span', {}, ' : '), h('b', {}, String(o.npcScore))));
+  const hero = h('div.score-hero');
+  hero.append(tx('h2', 'score.title'));
+  hero.append(tx('div.result-banner', won ? 'result.win' : 'result.lose'));
+  hero.append(h('div.final-points', {}, h('b', {}, String(o.playerScore)), h('span', {}, ' : '), h('b', {}, String(o.npcScore))));
   const total = h('div.total', {}, tx('span', 'score.total'), h('b.count-up', {}, '0'));
-  card.append(total);
+  hero.append(total);
   const counter = total.querySelector('b')!;
   const start = performance.now();
   const step = () => {
@@ -482,8 +483,9 @@ export function scoreScreen(app: App): Screen {
     if (k < 1 && counter.isConnected) requestAnimationFrame(step);
   };
   requestAnimationFrame(step);
-  if (o.submit?.newBest) card.append(tx('div.new-best', 'score.newBest'));
+  if (o.submit?.newBest) hero.append(tx('div.new-best', 'score.newBest'));
 
+  const detail = h('div.score-detail');
   const kv = h('dl.kv.score-kv');
   const row = (k: StringKey, v: string | HTMLElement) => kv.append(tx('dt', k), h('dd', {}, v));
   row('score.best', (o.submit?.best ?? o.breakdown.total).toLocaleString());
@@ -494,21 +496,21 @@ export function scoreScreen(app: App): Screen {
     row('score.rank', rank);
   }
   row('score.maxRally', String(o.stats.maxRally));
-  card.append(kv);
+  detail.append(kv);
 
-  card.append(tx('h3', 'score.quality'));
+  detail.append(tx('h3', 'score.quality'));
   const q = h('div.quality-row');
   const qItem = (key: StringKey, n: number, cls: string) => q.append(h(`div.q.${cls}` as 'div', {}, tx('span', key), h('b', {}, String(n))));
   qItem('judge.perfect', o.stats.perfect, 'perfect');
   qItem('judge.great', o.stats.great, 'great');
   qItem('judge.good', o.stats.good, 'good');
   qItem('judge.miss', o.stats.miss + o.stats.weak, 'miss');
-  card.append(q);
+  detail.append(q);
 
   const isStage = o.input.mode === 'stage';
   const stageId = o.input.stageId ?? 1;
   const allCleared = isStage && won && stageId >= MAX_STAGE;
-  if (allCleared) card.append(tx('div.new-best', 'score.allCleared'));
+  if (allCleared) detail.append(tx('div.new-best', 'score.allCleared'));
   const actions = h('div.btn-row.score-actions');
   actions.append(btn('ghost', 'score.toSetup', () => app.go('setup')));
   if (isStage && won && !allCleared) {
@@ -516,7 +518,7 @@ export function scoreScreen(app: App): Screen {
   } else {
     actions.append(btn('primary', 'score.retry', () => app.go('match')));
   }
-  card.append(actions);
+  card.append(hero, detail, actions);
   el.append(card);
   if (won) audio.play('sfx_crowd_cheer', 0.8);
   const root = h('div', {}, el);
