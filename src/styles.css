@@ -420,26 +420,100 @@ html[data-layout='mobile-landscape'] .stage-tile { max-height: 88px; }
 
 /* ------------------------------------------------------------------ modal / toast */
 .modal-root { position: absolute; inset: 0; z-index: 50; pointer-events: none; }
-.modal-backdrop { position: absolute; inset: 0; background: rgba(4, 8, 16, 0.6); display: flex; justify-content: center; align-items: center; padding: calc(var(--sys-h) + 8px) 16px calc(16px + var(--safe-b)); pointer-events: auto; overflow: hidden; animation: fadeIn 0.18s ease-out; }
-.modal-card { position: relative; width: min(460px, 100%); max-height: 100%; overflow: auto; background: #13213a; border: 1px solid var(--line); border-radius: 20px; padding: 22px; margin: 0; animation: popIn 0.22s cubic-bezier(0.2, 0.9, 0.3, 1.2); }
-.modal-card h2 { margin: 0 0 12px; }
+.modal-backdrop {
+  position: absolute; inset: 0; background: rgba(4, 8, 16, 0.6);
+  display: flex; justify-content: center; align-items: center;
+  padding: calc(var(--sys-h) + 8px) calc(12px + var(--safe-r)) calc(12px + var(--safe-b)) calc(12px + var(--safe-l));
+  pointer-events: auto; overflow: hidden; animation: fadeIn 0.18s ease-out;
+}
+.modal-card {
+  position: relative; width: min(460px, 100%);
+  max-height: min(100%, calc(var(--app-h, 100dvh) - var(--sys-h) - 24px - var(--safe-b)));
+  overflow: auto;
+  background: #13213a; border: 1px solid var(--line); border-radius: 20px; padding: 18px;
+  margin: 0; animation: popIn 0.22s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+.modal-card h2 { margin: 0 0 10px; padding-right: 36px; font-size: clamp(18px, 4.5vw, 22px); }
 .modal-card h3 { margin: 16px 0 8px; font-size: 14px; color: var(--ink-dim); }
-.modal-x { position: absolute; right: 10px; top: 10px; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: rgba(255, 255, 255, 0.06); }
+.modal-x { position: absolute; right: 8px; top: 8px; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: rgba(255, 255, 255, 0.06); z-index: 1; }
 .confirm p { line-height: 1.6; margin: 4px 0 0; padding-right: 30px; }
 @keyframes fadeIn { from { opacity: 0; } }
 @keyframes popIn { from { opacity: 0; transform: scale(0.92) translateY(10px); } }
 .kv { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; margin: 0; }
 .kv dt { color: var(--ink-dim); font-size: 14px; }
 .kv dd { margin: 0; font-weight: 800; text-align: right; word-break: break-all; }
-.howto { text-align: center; }
-.howto-art { height: 130px; display: grid; place-items: center; margin: 6px 0 12px; color: #fff; }
+
+/* How to Play — fit entirely in the viewport (art + text + controls). */
+.modal-card:has(.howto) {
+  width: min(520px, 100%);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.modal-card:has(.howto) > .howto { flex: 1; min-height: 0; }
+.howto {
+  text-align: center;
+  display: flex; flex-direction: column; gap: 8px;
+  min-height: 0; max-height: 100%; overflow: hidden;
+}
+.howto > h2 { margin: 0; padding-right: 36px; flex: none; }
+.howto-art {
+  flex: 0 1 auto; height: clamp(72px, 18vh, 120px);
+  display: grid; place-items: center; margin: 0; color: #fff; min-height: 0;
+}
 .howto-art svg { height: 100%; max-width: 100%; }
-.howto-art.has-art { height: auto; aspect-ratio: 4 / 3; max-height: 42vh; background-size: cover; background-position: center; border-radius: 14px; }
+.howto-art.has-art {
+  height: auto; width: 100%;
+  aspect-ratio: 16 / 10; max-height: min(26vh, 200px);
+  background-size: cover; background-position: center; border-radius: 12px;
+}
 .howto-art.has-art svg { display: none; }
-.howto-text { line-height: 1.65; min-height: 5em; margin: 0; }
+.howto-text {
+  flex: 1 1 auto; min-height: 0; margin: 0;
+  line-height: 1.5; font-size: clamp(13px, 2.6vw, 15px);
+  overflow-y: auto; overscroll-behavior: contain;
+}
+.howto .dots { flex: none; margin-top: 2px; }
+.howto .btn-row { flex: none; margin-top: 4px; justify-content: center; }
 .dots { display: flex; gap: 6px; justify-content: center; margin-top: 10px; }
 .dots i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.25); }
 .dots i.on { background: var(--accent); }
+
+html[data-layout='mobile-portrait'] .modal-card { padding: 14px; border-radius: 16px; }
+html[data-layout='mobile-portrait'] .howto-art.has-art { max-height: min(22vh, 160px); }
+html[data-layout='mobile-portrait'] .howto-text { font-size: 13px; line-height: 1.45; }
+
+html[data-layout='mobile-landscape'] .modal-backdrop {
+  padding: calc(var(--sys-h) + 4px) calc(10px + var(--safe-r)) calc(8px + var(--safe-b)) calc(10px + var(--safe-l));
+}
+html[data-layout='mobile-landscape'] .modal-card {
+  width: min(720px, 100%); max-height: calc(var(--app-h, 100dvh) - var(--sys-h) - 16px - var(--safe-b));
+  padding: 12px 14px;
+}
+html[data-layout='mobile-landscape'] .howto {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  grid-template-rows: auto 1fr auto auto;
+  gap: 6px 12px; text-align: left; align-items: stretch;
+}
+html[data-layout='mobile-landscape'] .howto > h2 {
+  grid-column: 1 / -1; font-size: 16px; margin: 0; text-align: left;
+}
+html[data-layout='mobile-landscape'] .howto-art {
+  grid-column: 1; grid-row: 2 / 4; height: 100%; max-height: none;
+  aspect-ratio: auto; align-self: stretch;
+}
+html[data-layout='mobile-landscape'] .howto-art.has-art {
+  aspect-ratio: auto; max-height: none; height: 100%; min-height: 0;
+}
+html[data-layout='mobile-landscape'] .howto-text {
+  grid-column: 2; grid-row: 2; font-size: 12px; line-height: 1.4;
+}
+html[data-layout='mobile-landscape'] .howto .dots {
+  grid-column: 2; grid-row: 3; justify-content: flex-start; margin: 0;
+}
+html[data-layout='mobile-landscape'] .howto .btn-row {
+  grid-column: 1 / -1; grid-row: 4; justify-content: flex-end; margin: 0;
+}
 .toast { position: fixed; left: 50%; bottom: calc(40px + var(--safe-b)); transform: translateX(-50%); background: rgba(255, 255, 255, 0.95); color: #13213a; padding: 10px 18px; border-radius: 12px; font-weight: 800; z-index: 60; transition: opacity 0.4s; }
 .toast.out { opacity: 0; }
 

@@ -386,9 +386,10 @@ function bounceCueSection(): HTMLElement {
       buttons.get(id)?.classList.toggle('active', cur.includes(id));
       buttons.get(id)?.classList.toggle('locked', !cur.includes(id) && cur.length >= BOUNCE_CUE_MAX);
     }
+    const list = cur.map((id) => String(BOUNCE_CUE_ORDER.indexOf(id) + 1)).join('+') || '—';
     hint.dataset.i18n = 'setup.bounceCueHint';
-    hint.dataset.i18nParams = JSON.stringify({ n: BOUNCE_CUE_MAX, list: cur.join('+') || '—' });
-    hint.textContent = t('setup.bounceCueHint', { n: BOUNCE_CUE_MAX, list: cur.join('+') || '—' });
+    hint.dataset.i18nParams = JSON.stringify({ n: BOUNCE_CUE_MAX, list });
+    hint.textContent = t('setup.bounceCueHint', { n: BOUNCE_CUE_MAX, list });
   };
   for (const id of BOUNCE_CUE_ORDER) {
     const b = btn('seg.bounce-cue', `setup.bounceCue.${id}` as StringKey, () => {
