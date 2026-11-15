@@ -238,13 +238,13 @@ export function setupScreen(app: App): Screen {
   const head = h('div.setup-head', {}, tx('h2', 'setup.title'));
   const modeTabs = h('div.segmented.mode');
   const charRow = h('div.char-row');
-  /** Settings stay in one viewport; only stage/free pick list scrolls. */
+  /** One right scrollbar for the whole menu (settings + stage pick). */
   const pickTitle = h('h3.pick-title');
   const pickArea = h('div.pick-area');
   const top = h('div.setup-top', {},
     h('section.sec-chars', {}, tx('h3', 'setup.character'), charRow, playLevelSection(), bounceCueSection(), ballSpeedSection()),
   );
-  const stages = h('div.setup-stages', {}, pickTitle, pickArea);
+  const main = h('div.setup-main', {}, top, pickTitle, pickArea);
 
   const renderChars = () => {
     clear(charRow);
@@ -343,7 +343,7 @@ export function setupScreen(app: App): Screen {
     btn('ghost', 'setup.howToPlay', () => openHowToPlay(app), {}, icon('help')),
     btn('primary.big', 'setup.startMatch', () => app.go('match')),
   );
-  el.append(head, top, stages, foot);
+  el.append(head, main, foot);
   renderChars();
   setMode(sel.mode);
   withMenuArt(el);

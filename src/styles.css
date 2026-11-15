@@ -256,23 +256,22 @@ html[data-layout='mobile-portrait'] .phone-row { grid-template-columns: 76px 1fr
 .setup-head h2 { margin: 0; font-size: 22px; }
 .setup-head .mode { min-width: 260px; }
 /*
- * Settings (character / play level / bounce / ball speed) stay in one viewport.
- * Only stage / free-play pick list scrolls underneath.
+ * One right scrollbar for the whole menu: character → play level → bounce → ball speed
+ * → stage title → stage thumbnails.
  */
-.setup-top {
-  flex: none; overflow: hidden;
-  display: flex; flex-direction: column; gap: 6px;
-  max-height: min(58vh, 520px);
-}
-.setup-stages {
+.setup-main {
   flex: 1; min-height: 0;
   overflow-x: hidden; overflow-y: auto;
   display: flex; flex-direction: column; gap: 0;
   padding-right: 4px; scrollbar-gutter: stable;
 }
-.setup-stages::-webkit-scrollbar { width: 8px; }
-.setup-stages::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.28); border-radius: 8px; }
-.setup-stages::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.06); border-radius: 8px; }
+.setup-main::-webkit-scrollbar { width: 8px; }
+.setup-main::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.28); border-radius: 8px; }
+.setup-main::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.06); border-radius: 8px; }
+.setup-top {
+  flex: none; overflow: visible;
+  display: flex; flex-direction: column; gap: 6px;
+}
 .sec-chars {
   min-width: 0; flex: none;
   display: grid;
@@ -348,7 +347,6 @@ html[data-layout='mobile-portrait'] .phone-row { grid-template-columns: 76px 1fr
 .setup-foot .primary.big { min-width: 200px; }
 
 /* Desktop: 3 chars in a row, then play+bounce side-by-side, ball speed full width */
-html[data-layout='desktop'] .setup-top { max-height: none; }
 html[data-layout='desktop'] .sec-chars {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -368,7 +366,6 @@ html[data-layout='desktop'] .play-level-hint { display: -webkit-box; -webkit-lin
 html[data-layout='mobile-portrait'] .setup { gap: 4px; padding-top: calc(var(--sys-h) + 6px); }
 html[data-layout='mobile-portrait'] .setup-head h2 { font-size: 18px; }
 html[data-layout='mobile-portrait'] .setup-head .mode { min-width: 0; width: 100%; }
-html[data-layout='mobile-portrait'] .setup-top { max-height: none; }
 html[data-layout='mobile-portrait'] .setup-foot .primary.big { min-width: 0; flex: 1; }
 html[data-layout='mobile-portrait'] .char-card { flex-direction: column; align-items: center; text-align: center; gap: 4px; padding: 5px 4px; }
 html[data-layout='mobile-portrait'] .char-portrait { width: 44px; }
@@ -391,7 +388,6 @@ html[data-layout='mobile-portrait'] .stage-tile { max-height: 100px; }
 html[data-layout='mobile-landscape'] .setup { gap: 3px; padding-top: calc(var(--sys-h) + 2px); }
 html[data-layout='mobile-landscape'] .setup-head { flex-wrap: nowrap; }
 html[data-layout='mobile-landscape'] .setup-head h2 { font-size: 15px; }
-html[data-layout='mobile-landscape'] .setup-top { max-height: none; }
 html[data-layout='mobile-landscape'] .sec-chars {
   display: grid;
   grid-template-columns: 1.15fr 1fr;
