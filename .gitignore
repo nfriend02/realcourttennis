@@ -10,3 +10,7 @@ docs/reports/audit/
 firebase-debug.log
 firestore-debug.log
 raw_assets/_preview/
+.vercel
+.env*
+
+!.env.example
