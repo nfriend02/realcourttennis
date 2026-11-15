@@ -367,9 +367,17 @@ html[data-layout='mobile-portrait'] .phone-row { grid-template-columns: 76px 1fr
 .bounce-cue-row { display: flex; flex-wrap: nowrap; gap: 4px; }
 .bounce-cue-row .seg { font-size: 10px; min-height: 34px; flex: 1 1 0; padding: 0 4px; white-space: nowrap; }
 .bounce-cue-row .seg.locked { opacity: 0.4; }
-.speed-row { display: grid; grid-template-columns: minmax(64px, auto) 1fr auto; align-items: center; gap: 6px; margin: 2px 0; }
-.speed-k { font-size: 11px; font-weight: 700; }
-.speed-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; }
+/* Shared columns so player/NPC speed bars start on the same vertical line */
+.ball-speed {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr) auto;
+  column-gap: 8px; row-gap: 4px; align-items: center;
+}
+.ball-speed > h3,
+.ball-speed > .speed-hint { grid-column: 1 / -1; }
+.speed-row { display: contents; }
+.speed-k { font-size: 11px; font-weight: 700; white-space: nowrap; }
+.speed-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; min-width: 0; }
 .speed-seg { height: 16px; min-width: 0; padding: 0; border-radius: 5px; border: 1px solid var(--line); background: rgba(255, 255, 255, 0.08); cursor: pointer; }
 .speed-seg.on { background: linear-gradient(180deg, var(--accent), #9fcf1a); border-color: transparent; }
 .speed-v { min-width: 64px; text-align: right; font-size: 11px; font-weight: 800; color: var(--accent); }
@@ -406,7 +414,7 @@ html[data-layout='mobile-portrait'] .play-level-hint,
 html[data-layout='mobile-portrait'] .speed-hint { display: none; }
 html[data-layout='mobile-portrait'] .bounce-cue-row { flex-wrap: wrap; }
 html[data-layout='mobile-portrait'] .bounce-cue-row .seg { flex: 1 1 30%; min-height: 32px; font-size: 9px; }
-html[data-layout='mobile-portrait'] .speed-row { grid-template-columns: minmax(56px, auto) 1fr; }
+html[data-layout='mobile-portrait'] .ball-speed { grid-template-columns: max-content minmax(0, 1fr); }
 html[data-layout='mobile-portrait'] .speed-v { display: none; }
 html[data-layout='mobile-portrait'] .stage-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
 html[data-layout='mobile-portrait'] .stage-num { font-size: 18px; }
@@ -521,25 +529,36 @@ html[data-layout='mobile-landscape'] .modal-card {
 }
 html[data-layout='mobile-landscape'] .howto {
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-  grid-template-rows: auto 1fr auto auto;
-  gap: 6px 12px; text-align: left; align-items: stretch;
+  grid-template-columns: minmax(140px, 0.9fr) minmax(0, 1.15fr);
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  gap: 6px 14px; text-align: left; align-items: center;
 }
 html[data-layout='mobile-landscape'] .howto > h2 {
   grid-column: 1 / -1; font-size: 16px; margin: 0; text-align: left;
 }
 html[data-layout='mobile-landscape'] .howto-art {
-  grid-column: 1; grid-row: 2 / 4; height: 100%; max-height: none;
-  aspect-ratio: auto; align-self: stretch;
+  grid-column: 1; grid-row: 2 / 4;
+  align-self: center; justify-self: stretch;
+  width: 100%; height: auto; max-height: none;
+  aspect-ratio: 16 / 10;
+}
+html[data-layout='mobile-landscape'] .howto-art svg {
+  width: 100%; height: auto; max-height: 100%;
 }
 html[data-layout='mobile-landscape'] .howto-art.has-art {
-  aspect-ratio: auto; max-height: none; height: 100%; min-height: 0;
+  height: auto;
+  max-height: min(42vh, calc(var(--app-h, 100dvh) - var(--sys-h) - 96px));
+  aspect-ratio: 16 / 10;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(0, 0, 0, 0.18);
 }
 html[data-layout='mobile-landscape'] .howto-text {
-  grid-column: 2; grid-row: 2; font-size: 12px; line-height: 1.4;
+  grid-column: 2; grid-row: 2; font-size: 12px; line-height: 1.4; align-self: center;
 }
 html[data-layout='mobile-landscape'] .howto .dots {
-  grid-column: 2; grid-row: 3; justify-content: flex-start; margin: 0;
+  grid-column: 2; grid-row: 3; justify-content: flex-start; margin: 0; align-self: start;
 }
 html[data-layout='mobile-landscape'] .howto .btn-row {
   grid-column: 1 / -1; grid-row: 4; justify-content: flex-end; margin: 0;
