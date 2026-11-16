@@ -21,6 +21,8 @@ export interface JudgeContext {
   reachMul: number;
   /** Timing window multiplier (Control stat and admin tuning). */
   windowMul: number;
+  /** Extra multiplier applied only to the Perfect tier window (character passive). */
+  perfectWindowMul?: number;
 }
 
 export interface SwingInput {
@@ -67,8 +69,10 @@ export function reachStageFor(distFromShoulder: number): ReachStage {
 
 export function timingTier(absDt: number, ctx: JudgeContext): number {
   const tiers = ctx.quality.tiers;
+  const perfectMul = ctx.perfectWindowMul ?? 1;
   for (let i = 0; i < tiers.length; i++) {
-    if (absDt <= tiers[i].timingMaxSec * ctx.windowMul) return i;
+    const tierMul = i === 0 ? perfectMul : 1;
+    if (absDt <= tiers[i].timingMaxSec * ctx.windowMul * tierMul) return i;
   }
   return -1;
 }

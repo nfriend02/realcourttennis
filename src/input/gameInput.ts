@@ -1,5 +1,7 @@
+import { haptic } from '../core/haptic';
 import { layout } from '../core/layout';
 import { settings } from '../core/settings';
+import { VISUAL } from '../data/gameData';
 import { type StrokeHeight, type StrokeId, makeStroke, sideForScreen } from '../game/physics/types';
 
 const EDGE_MARGIN_PX = 6;
@@ -125,6 +127,7 @@ export class GameInput {
       this.hovered = b.dataset.stroke as StrokeId;
       this.setHover(this.hovered);
       this.sink.press(this.hovered, this.sink.toMatchTime(e.timeStamp));
+      haptic(VISUAL.hitFeedback.hapticPressMs);
     });
     this.listen(this.cluster, 'pointermove', (e) => {
       if (e.pointerId !== this.clusterPointer) return;
@@ -143,8 +146,10 @@ export class GameInput {
       const s = cancelled ? null : this.hovered;
       this.hovered = null;
       this.setHover(null);
-      if (s) this.sink.release(s, this.sink.toMatchTime(e.timeStamp));
-      else this.sink.cancel();
+      if (s) {
+        this.sink.release(s, this.sink.toMatchTime(e.timeStamp));
+        haptic(VISUAL.hitFeedback.hapticHitMs);
+      } else this.sink.cancel();
     };
     this.listen(this.cluster, 'pointerup', (e) => end(e, false));
     this.listen(this.cluster, 'pointercancel', (e) => end(e, true));
@@ -153,20 +158,34 @@ export class GameInput {
   // ------------------------------------------------------------ keyboard (07 §11.4)
 
   private keyHeight(): StrokeHeight {
-    if (this.keys.has('ArrowUp')) return 'high';
-    if (this.keys.has('ArrowDown')) return 'low';
+    if (this.keys.has('ArrowUp') || this.keys.has('KeyI') || this.keys.has('Numpad8')) return 'high';
+    if (this.keys.has('ArrowDown') || this.keys.has('KeyK') || this.keys.has('Numpad2')) return 'low';
     return 'middle';
   }
 
+  private sideCode(): string {
+    if (this.keys.has('ArrowRight') || this.keys.has('KeyL') || this.keys.has('Numpad6')) return 'ArrowRight';
+    return 'ArrowLeft';
+  }
+
   private keyStrokeFor(code: string): StrokeId {
-    const screen: 1 | -1 = code === 'ArrowRight' ? 1 : -1;
+    const right = code === 'ArrowRight' || code === 'KeyL' || code === 'Numpad6';
+    const screen: 1 | -1 = right ? 1 : -1;
     return makeStroke(sideForScreen(screen, settings.hand), this.keyHeight());
+  }
+
+  private isSideKey(code: string): boolean {
+    return code === 'ArrowLeft' || code === 'ArrowRight' || code === 'KeyJ' || code === 'KeyL' || code === 'Numpad4' || code === 'Numpad6';
+  }
+
+  private isHeightKey(code: string): boolean {
+    return code === 'ArrowUp' || code === 'ArrowDown' || code === 'KeyI' || code === 'KeyK' || code === 'Numpad8' || code === 'Numpad2';
   }
 
   private bindKeys(): void {
     this.listen(window, 'keydown', (e: KeyboardEvent) => {
       if (e.repeat) {
-        if (e.code.startsWith('Arrow') || e.code === 'Space') e.preventDefault();
+        if (e.code.startsWith('Arrow') || e.code === 'Space' || this.isSideKey(e.code) || this.isHeightKey(e.code)) e.preventDefault();
         return;
       }
       const tm = this.sink.toMatchTime(e.timeStamp);
@@ -180,17 +199,25 @@ export class GameInput {
           break;
         case 'ArrowLeft':
         case 'ArrowRight':
+        case 'KeyJ':
+        case 'KeyL':
+        case 'Numpad4':
+        case 'Numpad6':
           e.preventDefault();
           this.keyStroke = this.keyStrokeFor(e.code);
           this.setHover(this.keyStroke);
           this.sink.press(this.keyStroke, tm);
+          haptic(VISUAL.hitFeedback.hapticPressMs);
           break;
         case 'ArrowUp':
         case 'ArrowDown':
+        case 'KeyI':
+        case 'KeyK':
+        case 'Numpad8':
+        case 'Numpad2':
           e.preventDefault();
           if (this.keyStroke) {
-            const side = this.keys.has('ArrowRight') ? 'ArrowRight' : 'ArrowLeft';
-            this.keyStroke = this.keyStrokeFor(side);
+            this.keyStroke = this.keyStrokeFor(this.sideCode());
             this.setHover(this.keyStroke);
             this.sink.press(this.keyStroke, tm);
           }
@@ -199,6 +226,7 @@ export class GameInput {
           e.preventDefault();
           this.spaceHeld = true;
           this.sink.press('fh_high', tm);
+          haptic(VISUAL.hitFeedback.hapticPressMs);
           break;
         default:
           break;
@@ -216,21 +244,31 @@ export class GameInput {
           break;
         case 'ArrowLeft':
         case 'ArrowRight':
+        case 'KeyJ':
+        case 'KeyL':
+        case 'Numpad4':
+        case 'Numpad6':
           if (this.keyStroke) {
             const s = this.keyStroke;
             this.keyStroke = null;
             this.setHover(null);
             this.sink.release(s, tm);
+            haptic(VISUAL.hitFeedback.hapticHitMs);
           }
           break;
         case 'ArrowUp':
         case 'ArrowDown':
+        case 'KeyI':
+        case 'KeyK':
+        case 'Numpad8':
+        case 'Numpad2':
           // Keep the chosen height: letting go of ↑/↓ a moment before ←/→ must not turn the stroke into a middle one.
           break;
         case 'Space':
           if (this.spaceHeld) {
             this.spaceHeld = false;
             this.sink.release('fh_high', tm);
+            haptic(VISUAL.hitFeedback.hapticHitMs);
           }
           break;
         default:

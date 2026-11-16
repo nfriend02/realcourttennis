@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { aiLevel, CHARACTERS, HIT_QUALITY, PHYSICS, RULES } from '../../data/gameData';
+import { npcComebackMul } from '../ai/npcBrain';
 import { SeededRandom } from '../core/random';
 import { findPlaneCrossing } from '../physics/ballFlight';
 import { type StrokeId, sideDir, strokeHeight, strokeSide } from '../physics/types';
@@ -294,6 +295,26 @@ describe('match model', () => {
     let wins = 0;
     for (let s = 0; s < 30; s++) if (runMatch(1, 0.04, 0.95, 100 + s).winner === 'player') wins++;
     expect(wins).toBeGreaterThanOrEqual(24);
+  });
+});
+
+describe('character passives & comeback', () => {
+  it('applies David / Susan / Wolfson passives from data', () => {
+    const david = CHARACTERS.find((c) => c.id === 'CHAR_01')!;
+    const susan = CHARACTERS.find((c) => c.id === 'CHAR_02')!;
+    const wolf = CHARACTERS.find((c) => c.id === 'CHAR_03')!;
+    expect(david.passives.perfectWindowMul).toBeCloseTo(1.1);
+    expect(susan.passives.moveSpeedMul).toBeCloseTo(1.15);
+    expect(wolf.passives.shotSpeedMul).toBeCloseTo(1.1);
+    const mSusan = new MatchModel({ player: susan, npc: david, hand: 'right', level: aiLevel(1), ballSpeedMul: 1, seed: 1 });
+    const mDavid = new MatchModel({ player: david, npc: susan, hand: 'right', level: aiLevel(1), ballSpeedMul: 1, seed: 1 });
+    expect(mSusan.player.maxSpeed).toBeGreaterThan(mDavid.player.maxSpeed);
+  });
+
+  it('lowers NPC return chance after long rallies', () => {
+    expect(npcComebackMul(4, RULES)).toBe(1);
+    expect(npcComebackMul(5, RULES)).toBeCloseTo(0.975);
+    expect(npcComebackMul(40, RULES)).toBeCloseTo(RULES.comeback.returnChanceFloorMul);
   });
 });
 

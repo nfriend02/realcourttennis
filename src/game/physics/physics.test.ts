@@ -3,7 +3,7 @@ import { HIT_QUALITY, PHYSICS } from '../../data/gameData';
 import { SeededRandom } from '../core/random';
 import { applySlow, createBall, createPrediction, findPlaneCrossing, type FlightEvent, predict, stepBall } from './ballFlight';
 import { inCourt, inServiceBox, netHeight } from './court';
-import { classifyFace, judgeHit, judgeServe, nearestFault, zoneOf, type JudgeContext } from './hitJudge';
+import { classifyFace, judgeHit, judgeServe, nearestFault, timingTier, zoneOf, type JudgeContext } from './hitJudge';
 import { planPlayerShot, solveLaunch } from './shotPlanner';
 import type { HitJudgment } from './types';
 
@@ -145,6 +145,11 @@ describe('racket face judgment', () => {
     expect(judgeServe(0, 'right', ctx).result).toBe('in');
     expect(judgeServe(-0.15, 'right', ctx).quality).toBe('early');
     expect(judgeServe(0.3, 'right', ctx).quality).toBe('miss');
+  });
+  it('perfectWindowMul expands only the Perfect timing tier', () => {
+    const dt = HIT_QUALITY.tiers[0].timingMaxSec * 1.05;
+    expect(timingTier(dt, ctx)).toBe(1);
+    expect(timingTier(dt, { ...ctx, perfectWindowMul: 1.1 })).toBe(0);
   });
 });
 

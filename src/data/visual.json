@@ -31,6 +31,21 @@
     "confettiSpreadM": 2.2,
     "confettiHeightM": 3.2
   },
+  "hitFeedback": {
+    "perfectHitStopSec": 0.1,
+    "perfectHitStopScale": 0.3,
+    "perfectShakeAmp": 0.06,
+    "perfectShakeDur": 0.15,
+    "perfectSparkCount": 28,
+    "perfectSparkSpeed": 3.4,
+    "hapticPressMs": 5,
+    "hapticHitMs": 8,
+    "hapticPerfectMs": [12, 28, 16],
+    "crowdRallyHits": 5,
+    "crowdRallyExcite": 0.55,
+    "crowdRallyCheerChance": 0.35
+  },
+
   "crowd": {
     "cols": 8,
     "rows": 2,

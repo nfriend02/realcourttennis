@@ -1,5 +1,6 @@
 ﻿import { audio, type SfxId } from '../audio/audioManager';
 import { backend } from '../backend';
+import { haptic } from '../core/haptic';
 import { layout } from '../core/layout';
 import { pause } from '../core/pause';
 import { settings } from '../core/settings';
@@ -228,26 +229,31 @@ export function matchScreen(app: App): Screen {
         break;
       case 'player_hit': {
         const q = e.judgment.quality;
+        const hf = VISUAL.hitFeedback;
         audio.play(qualitySfx[q]);
         const he = e.judgment.heightError;
         popup(he === 'low' ? 'judge.strokeLow' : he === 'high' ? 'judge.strokeHigh' : qualityKey[q], `judge ${q}`, true);
         if (q === 'perfect') {
-          hitStopUntil = realTime + 0.08;
-          view?.rig.shake(0.05, 0.15);
+          hitStopUntil = realTime + hf.perfectHitStopSec;
+          view?.rig.shake(hf.perfectShakeAmp, hf.perfectShakeDur);
+          haptic(hf.hapticPerfectMs);
           const b = model.ball;
           if (b) {
-            view?.sparks.burst(b.p.x, b.p.y, b.p.z, 26, 3.2);
+            view?.sparks.burst(b.p.x, b.p.y, b.p.z, hf.perfectSparkCount, hf.perfectSparkSpeed);
             view?.fx.spawn('fx_hit_perfect', b.p.x, b.p.y, b.p.z);
           }
         } else if (q === 'great' && model.ball) {
           view?.fx.spawn('fx_hit_great', model.ball.p.x, model.ball.p.y, model.ball.p.z);
+          haptic(hf.hapticHitMs);
         }
+        reactCrowdToRally();
         break;
       }
       case 'npc_hit':
         audio.play(e.smash ? 'sfx_hit_perfect' : 'sfx_hit_good', 0.8);
         npcSmash = e.smash;
         if (e.smash && model.ball) view?.fx.spawn('fx_hit_great', model.ball.p.x, model.ball.p.y, model.ball.p.z);
+        reactCrowdToRally();
         break;
       case 'npc_swing':
         if (e.whiff) audio.play('sfx_swing_whiff');
@@ -296,7 +302,9 @@ export function matchScreen(app: App): Screen {
         if (e.winner === 'player') {
           audio.play('sfx_score_win');
           view?.court.excite(theme === 'night' ? 1 : 0.7);
-          if (theme === 'night') audio.play('sfx_crowd_cheer', 1);
+          if (theme === 'night' || e.reason === 'ace' || model.stats.maxRally >= VISUAL.hitFeedback.crowdRallyHits) {
+            audio.play('sfx_crowd_cheer', 1);
+          }
           if (e.reason === 'ace') popup('call.ace', 'call big result');
           else if (e.reason === 'winner') popup('call.winner', 'call big result');
           else popup('call.point', 'call result');
@@ -312,14 +320,25 @@ export function matchScreen(app: App): Screen {
         endedWinner = e.winner;
         break;
       case 'next_point': {
-        const mp = model.playerScore === RULES.match.pointsToWin - 1 || model.npcScore === RULES.match.pointsToWin - 1;
-        if (mp && model.playerScore + model.npcScore > 0) popup('call.matchPoint', 'call small');
+        const need = RULES.match.pointsToWin;
+        const deuce = model.playerScore === need - 1 && model.npcScore === need - 1;
+        const mp = model.playerScore === need - 1 || model.npcScore === need - 1;
+        if (deuce) popup('call.deuce', 'call small tension');
+        else if (mp && model.playerScore + model.npcScore > 0) popup('call.matchPoint', 'call small tension');
         view?.ballView.resetTrail();
         pointWinner = null;
         npcSmash = false;
         break;
       }
     }
+  };
+
+  const reactCrowdToRally = () => {
+    const hf = VISUAL.hitFeedback;
+    if (model.rally < hf.crowdRallyHits) return;
+    view?.court.excite(hf.crowdRallyExcite);
+    // Deterministic cadence (every other eligible hit) instead of Math.random in the match loop.
+    if ((model.rally - hf.crowdRallyHits) % 2 === 0) audio.play('sfx_crowd_cheer', 0.55);
   };
 
   // ------------------------------------------------------------ frame helpers
@@ -367,6 +386,11 @@ export function matchScreen(app: App): Screen {
   const updateHud = () => {
     youServe.classList.toggle('on', model.server === 'player');
     npcServe.classList.toggle('on', model.server === 'npc');
+    const need = RULES.match.pointsToWin;
+    const deuce = model.playerScore === need - 1 && model.npcScore === need - 1;
+    const mp = model.playerScore === need - 1 || model.npcScore === need - 1;
+    scoreboard.classList.toggle('tension', mp && model.playerScore + model.npcScore > 0);
+    scoreboard.classList.toggle('deuce', deuce);
     let hint: StringKey | null = null;
     if (stageState === 'play') {
       if (model.phase === 'serve_wait') hint = model.serveAttempt > 0 ? 'hud.secondServe' : layout.profile === 'desktop' ? 'hud.serveHintKey' : 'hud.serveHint';
@@ -414,7 +438,7 @@ export function matchScreen(app: App): Screen {
     } else if (overlay.querySelector('.countdown')) setOverlay();
     stageTime += realDt;
 
-    timeScale = realTime < hitStopUntil ? 0.3 : 1;
+    timeScale = realTime < hitStopUntil ? VISUAL.hitFeedback.perfectHitStopScale : 1;
     let viewDt = realDt * timeScale;
 
     if (stageState === 'intro') {

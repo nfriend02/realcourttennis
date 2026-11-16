@@ -262,6 +262,7 @@ export function setupScreen(app: App): Screen {
         h('div.char-meta', {},
           tx('div.char-name', `char.${charKey(c)}.name` as StringKey),
           tx('div.char-type', `char.${charKey(c)}.type` as StringKey),
+          tx('div.char-passive', `char.${charKey(c)}.passive` as StringKey),
           statBar('stat.speed', c.speed), statBar('stat.power', c.power), statBar('stat.reach', c.reach), statBar('stat.control', c.control),
         ),
       );

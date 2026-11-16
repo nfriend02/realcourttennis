@@ -88,8 +88,17 @@ interface RankingDoc {
 }
 
 const PENDING_KEY = 'rct.fb.pendingResults';
+const PENDING_MAX = 30;
+const PENDING_FLUSH_MAX = 8;
 const GUEST_TTL_MS = 100 * 24 * 3600 * 1000;
 const MAX_SCORE = 40000;
+
+interface PendingMatch {
+  uid: string;
+  queuedAt: number;
+  attempts: number;
+  result: MatchResultInput;
+}
 
 /**
  * Firebase gateway: Auth (anonymous guest, email/password, phone alias email, Google/Apple) + Firestore.
@@ -101,6 +110,8 @@ export class FirebaseBackend implements Backend {
   private readonly app: FirebaseApp;
   private readonly auth: Auth;
   private readonly db: Firestore;
+
+  private onlineBound = false;
 
   constructor(private readonly env: FirebaseEnv) {
     this.app = initializeApp({
@@ -119,6 +130,16 @@ export class FirebaseBackend implements Backend {
       dbId === '(default)'
         ? initializeFirestore(this.app, { localCache: persistentLocalCache() })
         : initializeFirestore(this.app, { localCache: persistentLocalCache() }, dbId);
+    this.bindOnlineFlush();
+  }
+
+  private bindOnlineFlush(): void {
+    if (this.onlineBound || typeof window === 'undefined') return;
+    this.onlineBound = true;
+    window.addEventListener('online', () => void this.flushPending());
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') void this.flushPending();
+    });
   }
 
   // ------------------------------------------------------------ helpers
@@ -493,23 +514,72 @@ export class FirebaseBackend implements Backend {
     return above.data().count + tiedAbove.data().count + 1;
   }
 
+  private readPending(): PendingMatch[] {
+    try {
+      const raw = JSON.parse(localStorage.getItem(PENDING_KEY) ?? '[]') as unknown;
+      if (!Array.isArray(raw)) return [];
+      return raw
+        .map((item): PendingMatch | null => {
+          if (!item || typeof item !== 'object') return null;
+          const o = item as Record<string, unknown>;
+          // Legacy shape: bare MatchResultInput without uid wrapper.
+          if ('mode' in o && 'score' in o && !('result' in o)) {
+            const uid = this.auth.currentUser?.uid;
+            if (!uid) return null;
+            return { uid, queuedAt: Date.now(), attempts: 0, result: o as unknown as MatchResultInput };
+          }
+          if (typeof o.uid !== 'string' || !o.result || typeof o.result !== 'object') return null;
+          return {
+            uid: o.uid,
+            queuedAt: typeof o.queuedAt === 'number' ? o.queuedAt : Date.now(),
+            attempts: typeof o.attempts === 'number' ? o.attempts : 0,
+            result: o.result as MatchResultInput,
+          };
+        })
+        .filter((x): x is PendingMatch => !!x);
+    } catch {
+      return [];
+    }
+  }
+
+  private writePending(list: PendingMatch[]): void {
+    localStorage.setItem(PENDING_KEY, JSON.stringify(list.slice(-PENDING_MAX)));
+  }
+
   private queue(r: MatchResultInput): void {
-    const list = JSON.parse(localStorage.getItem(PENDING_KEY) ?? '[]') as MatchResultInput[];
-    list.push(r);
-    localStorage.setItem(PENDING_KEY, JSON.stringify(list.slice(-20)));
+    const uid = this.auth.currentUser?.uid;
+    if (!uid) return;
+    const list = this.readPending();
+    list.push({ uid, queuedAt: Date.now(), attempts: 0, result: r });
+    this.writePending(list);
   }
 
   private async flushPending(attempt = 0): Promise<void> {
-    const list = JSON.parse(localStorage.getItem(PENDING_KEY) ?? '[]') as MatchResultInput[];
-    if (!list.length || attempt >= 5) return;
+    const uid = this.auth.currentUser?.uid;
+    if (!uid || attempt >= PENDING_FLUSH_MAX) return;
+    const all = this.readPending();
+    if (!all.length) return;
+    const mine = all.filter((p) => p.uid === uid);
+    const others = all.filter((p) => p.uid !== uid);
+    if (!mine.length) {
+      this.writePending(others);
+      return;
+    }
     try {
-      while (list.length) {
-        await this.sendResult(list[0]);
-        list.shift();
-        localStorage.setItem(PENDING_KEY, JSON.stringify(list));
+      while (mine.length) {
+        const next = mine[0];
+        await this.sendResult(next.result);
+        mine.shift();
+        this.writePending([...others, ...mine]);
       }
     } catch {
-      setTimeout(() => void this.flushPending(attempt + 1), 2000 * 2 ** attempt);
+      if (mine.length) {
+        mine[0].attempts += 1;
+        if (mine[0].attempts >= PENDING_FLUSH_MAX) mine.shift();
+        this.writePending([...others, ...mine]);
+      }
+      const delay = Math.min(60_000, 2000 * 2 ** attempt);
+      setTimeout(() => void this.flushPending(attempt + 1), delay);
     }
   }
 }

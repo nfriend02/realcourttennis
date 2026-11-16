@@ -1,5 +1,53 @@
 [
-  { "id": "CHAR_01", "name": "David", "gender": "male", "typeKey": "char.david.type", "speed": 85, "power": 80, "reach": 82, "control": 88, "heightM": 1.82, "reachM": 1.33, "color": "#2E7DD7", "skin": "#E8BE9A", "hair": "#3B2A1E", "bottom": "#F4F6FA" },
-  { "id": "CHAR_02", "name": "Susan", "gender": "female", "typeKey": "char.susan.type", "speed": 92, "power": 74, "reach": 86, "control": 90, "heightM": 1.68, "reachM": 1.38, "color": "#E04F8A", "skin": "#F1CBA8", "hair": "#C9873A", "bottom": "#FFFFFF" },
-  { "id": "CHAR_03", "name": "Wolfson", "gender": "male", "typeKey": "char.wolfson.type", "speed": 80, "power": 92, "reach": 84, "control": 78, "heightM": 1.88, "reachM": 1.35, "color": "#F29B2E", "skin": "#C98E64", "hair": "#141414", "bottom": "#26324A" }
+  {
+    "id": "CHAR_01",
+    "name": "David",
+    "gender": "male",
+    "typeKey": "char.david.type",
+    "speed": 85,
+    "power": 80,
+    "reach": 82,
+    "control": 88,
+    "heightM": 1.82,
+    "reachM": 1.33,
+    "color": "#2E7DD7",
+    "skin": "#E8BE9A",
+    "hair": "#3B2A1E",
+    "bottom": "#F4F6FA",
+    "passives": { "perfectWindowMul": 1.1, "moveSpeedMul": 1.0, "shotSpeedMul": 1.0 }
+  },
+  {
+    "id": "CHAR_02",
+    "name": "Susan",
+    "gender": "female",
+    "typeKey": "char.susan.type",
+    "speed": 92,
+    "power": 74,
+    "reach": 86,
+    "control": 90,
+    "heightM": 1.68,
+    "reachM": 1.38,
+    "color": "#E04F8A",
+    "skin": "#F1CBA8",
+    "hair": "#C9873A",
+    "bottom": "#FFFFFF",
+    "passives": { "perfectWindowMul": 1.0, "moveSpeedMul": 1.15, "shotSpeedMul": 1.0 }
+  },
+  {
+    "id": "CHAR_03",
+    "name": "Wolfson",
+    "gender": "male",
+    "typeKey": "char.wolfson.type",
+    "speed": 80,
+    "power": 92,
+    "reach": 84,
+    "control": 78,
+    "heightM": 1.88,
+    "reachM": 1.35,
+    "color": "#F29B2E",
+    "skin": "#C98E64",
+    "hair": "#141414",
+    "bottom": "#26324A",
+    "passives": { "perfectWindowMul": 1.0, "moveSpeedMul": 1.0, "shotSpeedMul": 1.1 }
+  }
 ]

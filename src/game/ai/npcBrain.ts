@@ -91,7 +91,13 @@ function styleTarget(ctx: NpcContext, from: Vec3, playerX: number, rng: IRandom)
     case 'cross':
       return { x: (from.x >= 0 ? -1 : 1) * 2.6, z: -9.5 };
     case 'corners':
-    case 'corners_smash':
+    case 'corners_smash': {
+      // Pull the player wide, then stab the open corner (reverse-cross when they are already wide).
+      const wide = Math.abs(playerX) > 1.2;
+      const deep = rng.next() < (wide ? 0.85 : 0.7);
+      const margin = wide ? 0.55 : 0.9;
+      return { x: away * (hw - margin), z: deep ? -10.3 : -7.2 };
+    }
     default:
       return { x: away * (hw - 0.9), z: rng.next() < 0.7 ? -10.3 : -7.6 };
   }
@@ -109,10 +115,22 @@ export function planNpcReturn(from: Vec3, smash: boolean, playerX: number, ctx: 
   const lim = m.npcCourtClampM;
   const tx = Math.min(Math.max(t.x + Math.cos(ang) * rr, -c.halfWidth + lim), c.halfWidth - lim);
   const tz = Math.min(Math.max(t.z + Math.sin(ang) * rr, -c.halfLength + lim), -2.0);
-  const spin: SpinType = smash ? 'flat' : (rng.pick(ctx.level.spinWeights) as SpinType);
+  let spin: SpinType = smash ? 'flat' : (rng.pick(ctx.level.spinWeights) as SpinType);
+  const corners = ctx.level.targetStyle === 'corners' || ctx.level.targetStyle === 'corners_smash';
+  if (!smash && corners && Math.abs(playerX) > 1.2 && Math.sign(tx) !== Math.sign(playerX || 1) && rng.next() < 0.55) {
+    spin = 'slice';
+  }
   const vh = m.npcBaseShotSpeed * ctx.ballSpeedMul * (smash ? m.npcSmashSpeedMul : 1);
   const velocity = solveLaunch(from, tx, tz, vh, spin, smash ? 0.9 : spinApex(spin, ctx), true, cfg);
   return { velocity, spin, target: { x: tx, z: tz }, error: 'none', smash };
+}
+
+/** Rally-length comeback: longer rallies slightly lower NPC return chance (mobile mini-game pacing). */
+export function npcComebackMul(rallyHits: number, rules: RulesConfig): number {
+  const c = rules.comeback;
+  if (!c || rallyHits < c.rallyStart) return 1;
+  const drops = (rallyHits - c.rallyStart + 1) * c.returnChanceDropPerHit;
+  return Math.max(c.returnChanceFloorMul, 1 - drops);
 }
 
 /** Failed return roll: Net 40% / Long 30% / Wide 30%. */

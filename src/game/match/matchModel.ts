@@ -8,7 +8,7 @@ import {
   RULES,
   type RulesConfig,
 } from '../../data/gameData';
-import { type NpcContactPlan, type NpcContext, npcReturnChance, planNpcContact, planNpcError, planNpcReturn, planNpcServe } from '../ai/npcBrain';
+import { type NpcContactPlan, type NpcContext, npcComebackMul, npcReturnChance, planNpcContact, planNpcError, planNpcReturn, planNpcServe } from '../ai/npcBrain';
 import { type IRandom, SeededRandom } from '../core/random';
 import {
   applySlow,
@@ -176,12 +176,14 @@ export class MatchModel {
     for (let i = 0; i < 4; i++) this.flightEvents.push({ type: 'bounce', x: 0, y: 0, z: 0, dt: 0, bounces: 0 });
     this.playerBounds = movementBounds('player', this.cfg);
     this.npcBounds = movementBounds('npc', this.cfg);
+    const passives = setup.player.passives;
     this.judgeCtx = {
       physics: this.cfg,
       quality: this.quality,
       hand: this.hand,
       reachMul: setup.player.reach / 85,
       windowMul: (1 + (setup.player.control - 85) * 0.005) * this.tuning.timingWindowMul,
+      perfectWindowMul: passives.perfectWindowMul,
     };
     this.npcCtx = {
       physics: this.cfg,
@@ -191,7 +193,7 @@ export class MatchModel {
       ballSpeedMul: setup.ballSpeedMul * this.tuning.ballSpeedMul,
       returnMul: this.tuning.npcReturnMul,
     };
-    this.player = createActor(0.8, -SERVE_Z, this.cfg.baseMoveSpeed * (setup.player.speed / 85));
+    this.player = createActor(0.8, -SERVE_Z, this.cfg.baseMoveSpeed * (setup.player.speed / 85) * passives.moveSpeedMul);
     this.npc = createActor(0, this.rules.match.npcHomeZ, setup.level.speed);
     this.server = this.rules.match.firstServer === 'npc' ? 'npc' : 'player';
     this.setupPoint();
@@ -889,7 +891,7 @@ export class MatchModel {
     if (!h.serve && !this.live) return;
     const from = { x: b.p.x, y: Math.max(b.p.y, h.serve ? this.cfg.serveToss.contactMinHeightM : 0.15), z: b.p.z };
     const sp = this.setup.player;
-    const speedMul = this.tuning.ballSpeedMul;
+    const speedMul = this.tuning.ballSpeedMul * sp.passives.shotSpeedMul;
     const plan = h.serve
       ? planPlayerServe(h.judgment, from, this.serveBoxSign, sp.power, speedMul, this.cfg, this.quality)
       : planPlayerShot({ judgment: h.judgment, from, powerStat: sp.power, controlStat: sp.control, chargeMul: h.chargeMul, speedMul }, this.cfg, this.quality, this.rng);
@@ -994,7 +996,7 @@ export class MatchModel {
       return;
     }
     const tier = this.lastJudgment ? this.lastJudgment.tier : 2;
-    const chance = npcReturnChance(tier, this.npcCtx);
+    const chance = npcReturnChance(tier, this.npcCtx) * npcComebackMul(this.rally, this.rules);
     const from = { x: b.p.x, y: Math.max(b.p.y, 0.2), z: b.p.z };
     const ok = this.rng.next() < chance;
     const shot = ok ? planNpcReturn(from, plan.smash, this.player.x, this.npcCtx, this.rng) : planNpcError(from, this.npcCtx, this.rng);

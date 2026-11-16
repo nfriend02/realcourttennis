@@ -36,6 +36,11 @@
     "scaleMin": 0.4,
     "scaleMax": 8.0
   },
+  "comeback": {
+    "rallyStart": 5,
+    "returnChanceDropPerHit": 0.025,
+    "returnChanceFloorMul": 0.55
+  },
   "replayMode": "player_winners",
   "autoDetectLanguage": false
 }

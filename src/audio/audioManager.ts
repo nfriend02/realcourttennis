@@ -54,11 +54,28 @@ class AudioManager {
   init(): void {
     settings.onSound(() => this.applyEnabled());
     const unlock = () => {
-      if (settings.soundOn) this.ensure();
-      void this.ctx?.resume();
+      this.ensure();
+      void this.unlockContext();
     };
     window.addEventListener('pointerdown', unlock, { passive: true });
     window.addEventListener('keydown', unlock);
+    window.addEventListener('touchend', unlock, { passive: true });
+  }
+
+  /** Resume AudioContext and poke a silent buffer (iOS Safari / Chrome autoplay unlock). */
+  private async unlockContext(): Promise<void> {
+    const ctx = this.ctx;
+    if (!ctx) return;
+    try {
+      if (ctx.state === 'suspended') await ctx.resume();
+      const buf = ctx.createBuffer(1, 1, ctx.sampleRate);
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      src.connect(ctx.destination);
+      src.start(0);
+    } catch {
+      // Ignore unlock failures; later play() calls will retry resume.
+    }
   }
 
   get enabled(): boolean {
@@ -99,7 +116,7 @@ class AudioManager {
     const on = settings.soundOn;
     if (on) this.ensure();
     if (!this.ctx) return;
-    void this.ctx.resume();
+    void this.unlockContext();
     this.master.gain.setTargetAtTime(on && !this.paused ? 1 : 0, this.ctx.currentTime, 0.03);
   }
 

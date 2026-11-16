@@ -4,6 +4,7 @@
 
 | # | 날짜 | 결정 | 근거 | 영향 |
 | --- | --- | --- | --- | --- |
+| X44 | 2026-11-16 | Inspection report upgrade (Q1=B): Perfect hit feedback mid values (hit-stop 0.10s / shake 0.06), silent-buffer audio unlock, haptic + IJKL/Numpad stroke keys, character passives (David Perfect+10% / Susan move+15% / Wolfson shot+10%), Lv4–5 corner reverse-cross + slice bias, rally comeback returnChance drop, deuce/match-point HUD tension, rally crowd cheer, Firebase pending results queue hardened (uid-scoped localStorage + online/visibility flush). Keep full-bleed (no letterbox). Skip stamina UI. | User choices after 10_realcourt_tennis_inspection_report.md review | characters.json passives, visual.json hitFeedback, rules.json comeback, npcBrain, matchModel, matchScreen, audioManager, gameInput, firebaseBackend, i18n, styles | 07 §8·§9·§11, ADR-002 |
 | X01 | 2026-11-06 | **C01 / D01 변경**: Engine을 Unity 6 LTS에서 **Three.js + Vite + TypeScript (Web 3D)** 로 전환 | 개발 환경에 Unity 미설치, 사용자 Gate G0 승인 | ADR-001. 07의 게임 사양·경험 표준은 그대로 유지, Engine Binding만 Web으로 |
 | X02 | 2026-11-06 | Data Table은 CSV 대신 **Typed JSON** (src/data/\*.json) | Web Build에서 Parser 불필요, Type 안전 | 07 §18의 Column 구성 유지 |
 | X03 | 2026-11-06 | 원본 기획 문서(01, 02, a01~a15, 05, 06, 07)는 **Repository Root에 그대로 유지**하고 docs/specs/ 사본을 만들지 않음 | 사본 이중 관리 방지 | 07 §5.1의 docs/specs/는 Root 문서로 대체 |

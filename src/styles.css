@@ -344,6 +344,7 @@ html[data-layout='mobile-portrait'] .phone-row { grid-template-columns: 76px 1fr
 .char-meta { flex: 1; min-width: 0; }
 .char-name { font-weight: 900; font-size: 13px; line-height: 1.2; }
 .char-type { font-size: 10px; color: var(--ink-dim); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.char-passive { font-size: 10px; color: var(--accent); font-weight: 700; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .stat { display: grid; grid-template-columns: 52px 1fr 22px; align-items: center; gap: 3px; font-size: 9px; color: var(--ink-dim); }
 .stat-bar { height: 4px; border-radius: 3px; background: rgba(255, 255, 255, 0.1); overflow: hidden; }
 .stat-bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--c, var(--accent)), #fff); border-radius: 3px; }
@@ -701,6 +702,18 @@ html[data-layout='mobile-portrait'] .scoreboard { top: calc(var(--sys-h) + 2px);
 .sb-name { font-weight: 800; color: var(--c); }
 .sb-score { font-size: 24px; font-weight: 900; min-width: 18px; text-align: center; font-variant-numeric: tabular-nums; }
 .sb-score.bump { animation: bump 0.5s ease-out; }
+.scoreboard.tension {
+  box-shadow: 0 0 0 1px rgba(255, 120, 80, 0.55), 0 8px 28px rgba(255, 90, 40, 0.28);
+  animation: tensionPulse 1.2s ease-in-out infinite;
+}
+.scoreboard.deuce {
+  box-shadow: 0 0 0 1px rgba(255, 210, 80, 0.7), 0 8px 28px rgba(255, 190, 40, 0.32);
+}
+@keyframes tensionPulse {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.12); }
+}
+.popup.call.tension { color: #ffd27a; letter-spacing: 0.04em; }
 @keyframes bump { 30% { transform: scale(1.5); color: var(--accent); } }
 .sb-colon { font-weight: 900; opacity: 0.6; }
 .sb-serve { width: 8px; height: 8px; border-radius: 50%; background: transparent; }

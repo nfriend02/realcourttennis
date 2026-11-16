@@ -15,6 +15,15 @@ export type PhysicsConfig = typeof physicsJson;
 export type RulesConfig = typeof rulesJson;
 export type VisualConfig = typeof visualJson;
 
+export interface CharacterPassives {
+  /** Expands Perfect timing window only (David). */
+  perfectWindowMul: number;
+  /** Multiplies auto/manual move speed (Susan). */
+  moveSpeedMul: number;
+  /** Multiplies outbound shot horizontal speed (Wolfson). */
+  shotSpeedMul: number;
+}
+
 export interface CharacterDef {
   id: string;
   name: string;
@@ -30,6 +39,7 @@ export interface CharacterDef {
   skin: string;
   hair: string;
   bottom: string;
+  passives: CharacterPassives;
 }
 
 export interface AiLevelDef {
